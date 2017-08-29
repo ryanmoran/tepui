@@ -1,0 +1,16 @@
+{
+  "provider": {
+    "google": {
+      "credentials": "some-credentials",
+      "project": "some-project",
+      "region": "some-region"
+    }
+  },
+  "resource": {
+    "google_compute_network": {
+      "network": {
+        "name": "some-network"
+      }
+    }
+  }
+}
