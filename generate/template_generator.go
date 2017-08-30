@@ -60,7 +60,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 		for _, network := range manifest.Environment.Networks {
 			template.Resources.Add(network.Name, TemplateResourceAzureVirtualNetwork{
 				Name:              network.Name,
-				ResourceGroupName: manifest.Environment.Name,
+				ResourceGroupName: "${azurerm_resource_group.resource_group.name}",
 				AddressSpace:      []string{network.CIDR},
 				Location:          manifest.Provider.Azure.Region,
 			})
