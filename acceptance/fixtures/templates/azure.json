@@ -15,10 +15,16 @@
       }
     },
     "azurerm_virtual_network": {
-      "network": {
-        "name": "some-network",
+      "some-network-1": {
+        "name": "some-network-1",
         "resource_group_name": "some-environment",
         "address_space": ["1.2.3.4/5"],
+        "location": "some-region"
+      },
+      "some-network-2": {
+        "name": "some-network-2",
+        "resource_group_name": "some-environment",
+        "address_space": ["6.7.8.9/10"],
         "location": "some-region"
       }
     }

@@ -23,7 +23,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 		})
 
 		for _, network := range manifest.Environment.Networks {
-			template.Resources.Add("network", TemplateResourceGoogleComputeNetwork{
+			template.Resources.Add(network.Name, TemplateResourceGoogleComputeNetwork{
 				Name: network.Name,
 			})
 		}
@@ -36,7 +36,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 		})
 
 		for _, network := range manifest.Environment.Networks {
-			template.Resources.Add("network", TemplateResourceAWSVPC{
+			template.Resources.Add(network.Name, TemplateResourceAWSVPC{
 				CIDRBlock: network.CIDR,
 				Tags: map[string]string{
 					"name": network.Name,
@@ -58,7 +58,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 		})
 
 		for _, network := range manifest.Environment.Networks {
-			template.Resources.Add("network", TemplateResourceAzureVirtualNetwork{
+			template.Resources.Add(network.Name, TemplateResourceAzureVirtualNetwork{
 				Name:              network.Name,
 				ResourceGroupName: manifest.Environment.Name,
 				AddressSpace:      []string{network.CIDR},

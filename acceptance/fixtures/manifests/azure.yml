@@ -11,5 +11,7 @@ provider:
 environment:
   name: some-environment
   networks:
-    - name: some-network
-      cidr: 1.2.3.4/5
+  - name: some-network-1
+    cidr: 1.2.3.4/5
+  - name: some-network-2
+    cidr: 6.7.8.9/10

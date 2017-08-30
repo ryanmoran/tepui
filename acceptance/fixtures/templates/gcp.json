@@ -8,8 +8,11 @@
   },
   "resource": {
     "google_compute_network": {
-      "network": {
-        "name": "some-network"
+      "some-network-1": {
+        "name": "some-network-1"
+      },
+      "some-network-2": {
+        "name": "some-network-2"
       }
     }
   }

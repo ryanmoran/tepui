@@ -45,7 +45,7 @@ var _ = Describe("TemplateGenerator", func() {
 					},
 					"resource": {
 						"google_compute_network": {
-							"network": {
+							"some-network": {
 								"name": "some-network"
 							}
 						}
@@ -89,7 +89,7 @@ var _ = Describe("TemplateGenerator", func() {
 					},
 					"resource": {
 						"aws_vpc": {
-							"network": {
+							"some-network": {
 								"cidr_block": "1.2.3.4/5",
 								"tags": {
 									"name": "some-network"
@@ -145,7 +145,7 @@ var _ = Describe("TemplateGenerator", func() {
 							}
 						},
 						"azurerm_virtual_network": {
-							"network": {
+							"some-network": {
 								"name": "some-network",
 								"resource_group_name": "some-environment",
 								"address_space": ["1.2.3.4/5"],
