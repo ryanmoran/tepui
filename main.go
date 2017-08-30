@@ -27,34 +27,3 @@ func main() {
 
 	fmt.Println(template)
 }
-
-type Manifest struct {
-	Provider struct {
-		Type   string `yaml:"type"`
-		Params struct {
-			Credentials string `yaml:"credentials"`
-			Project     string `yaml:"project"`
-			Region      string `yaml:"region"`
-		} `yaml:"params"`
-	} `yaml:"provider"`
-	Network struct {
-		Name string `yaml:"name"`
-	} `yaml:"network"`
-}
-
-type Template struct {
-	Provider struct {
-		Google struct {
-			Credentials string `json:"credentials"`
-			Project     string `json:"project"`
-			Region      string `json:"region"`
-		} `json:"google"`
-	} `json:"provider"`
-	Resource struct {
-		GoogleComputeNetwork struct {
-			Network struct {
-				Name string `json:"name"`
-			} `json:"network"`
-		} `json:"google_compute_network"`
-	} `json:"resource"`
-}
