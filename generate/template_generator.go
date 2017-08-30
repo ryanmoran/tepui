@@ -13,12 +13,34 @@ func NewTemplateGenerator() TemplateGenerator {
 }
 
 func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
-	var template Template
-	template.Provider.Google.Credentials = manifest.Provider.GCP.Credentials
-	template.Provider.Google.Project = manifest.Provider.GCP.Project
-	template.Provider.Google.Region = manifest.Provider.GCP.Region
+	template := NewTemplate()
+	switch manifest.Provider.Type {
+	case "gcp":
+		template.Providers.Add(TemplateProviderGoogle{
+			Credentials: manifest.Provider.GCP.Credentials,
+			Project:     manifest.Provider.GCP.Project,
+			Region:      manifest.Provider.GCP.Region,
+		})
 
-	template.Resource.GoogleComputeNetwork.Network.Name = manifest.Network.Name
+		template.Resources.Add("network", TemplateResourceGoogleComputeNetwork{
+			Name: manifest.Network.Name,
+		})
+	case "aws":
+		template.Providers.Add(TemplateProviderAWS{
+			AccessKey: manifest.Provider.AWS.AccessKey,
+			SecretKey: manifest.Provider.AWS.SecretKey,
+			Region:    manifest.Provider.AWS.Region,
+		})
+
+		template.Resources.Add("network", TemplateResourceAWSVPC{
+			CIDRBlock: manifest.Network.CIDR,
+			Tags: map[string]string{
+				"name": manifest.Network.Name,
+			},
+		})
+	default:
+		panic("unknown provider")
+	}
 
 	output, err := json.Marshal(template)
 	if err != nil {
@@ -28,13 +50,41 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 	return string(output), nil
 }
 
-type Template struct {
-	Provider TemplateProvider `json:"provider"`
-	Resource TemplateResource `json:"resource"`
+func NewTemplate() Template {
+	return Template{
+		Providers: &TemplateProviderCollection{},
+		Resources: &TemplateResourceCollection{},
+	}
 }
 
-type TemplateProvider struct {
-	Google TemplateProviderGoogle `json:"google"`
+type Template struct {
+	Providers *TemplateProviderCollection `json:"provider"`
+	Resources *TemplateResourceCollection `json:"resource"`
+}
+
+type provider interface {
+	_provider()
+}
+
+type TemplateProviderCollection struct {
+	providers map[string]provider
+}
+
+func (tpc *TemplateProviderCollection) Add(p provider) {
+	if tpc.providers == nil {
+		tpc.providers = make(map[string]provider)
+	}
+
+	switch p.(type) {
+	case TemplateProviderGoogle:
+		tpc.providers["google"] = p
+	case TemplateProviderAWS:
+		tpc.providers["aws"] = p
+	}
+}
+
+func (tpc TemplateProviderCollection) MarshalJSON() ([]byte, error) {
+	return json.Marshal(tpc.providers)
 }
 
 type TemplateProviderGoogle struct {
@@ -43,12 +93,53 @@ type TemplateProviderGoogle struct {
 	Region      string `json:"region"`
 }
 
-type TemplateResource struct {
-	GoogleComputeNetwork TemplateResourceGoogleComputeNetwork `json:"google_compute_network"`
+func (tpg TemplateProviderGoogle) _provider() {}
+
+type TemplateProviderAWS struct {
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
+	Region    string `json:"region"`
+}
+
+func (tpa TemplateProviderAWS) _provider() {}
+
+type resource interface {
+	resourceType() string
+}
+
+type TemplateResourceCollection struct {
+	resources map[string]map[string]resource
+}
+
+func (trc *TemplateResourceCollection) Add(name string, r resource) {
+	if trc.resources == nil {
+		trc.resources = make(map[string]map[string]resource)
+	}
+
+	if trc.resources[r.resourceType()] == nil {
+		trc.resources[r.resourceType()] = make(map[string]resource)
+	}
+
+	trc.resources[r.resourceType()][name] = r
+}
+
+func (trc TemplateResourceCollection) MarshalJSON() ([]byte, error) {
+	return json.Marshal(trc.resources)
 }
 
 type TemplateResourceGoogleComputeNetwork struct {
-	Network struct {
-		Name string `json:"name"`
-	} `json:"network"`
+	Name string `json:"name"`
+}
+
+func (trgcn TemplateResourceGoogleComputeNetwork) resourceType() string {
+	return "google_compute_network"
+}
+
+type TemplateResourceAWSVPC struct {
+	CIDRBlock string            `json:"cidr_block"`
+	Tags      map[string]string `json:"tags"`
+}
+
+func (trav TemplateResourceAWSVPC) resourceType() string {
+	return "aws_vpc"
 }

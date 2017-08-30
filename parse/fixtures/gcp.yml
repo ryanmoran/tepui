@@ -7,3 +7,4 @@ provider:
 
 network:
   name: some-network
+  cidr: 1.2.3.4/5

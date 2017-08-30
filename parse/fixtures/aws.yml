@@ -1,0 +1,10 @@
+provider:
+  type: aws
+  params:
+    access_key: some-access-key
+    secret_key: some-secret-key
+    region: some-region
+
+network:
+  name: some-network
+  cidr: 1.2.3.4/5

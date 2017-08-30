@@ -1,0 +1,19 @@
+{
+  "provider": {
+    "aws": {
+      "access_key": "some-access-key",
+      "secret_key": "some-secret-key",
+      "region": "some-region"
+    }
+  },
+  "resource": {
+    "aws_vpc": {
+      "network": {
+        "cidr_block": "1.2.3.4/5",
+        "tags": {
+          "name": "some-network"
+        }
+      }
+    }
+  }
+}

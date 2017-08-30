@@ -11,23 +11,33 @@ import (
 )
 
 var _ = Describe("generate", func() {
-	var templateFixture string
+	Describe("GCP", func() {
+		It("generates a template with a provider", func() {
+			command := exec.Command(pathToMain,
+				"--manifest", "fixtures/manifests/gcp.yml")
+			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
+			Expect(err).NotTo(HaveOccurred())
 
-	BeforeEach(func() {
-		contents, err := ioutil.ReadFile("fixtures/template.json")
-		Expect(err).NotTo(HaveOccurred())
+			Eventually(session).Should(gexec.Exit(0))
 
-		templateFixture = string(contents)
+			contents, err := ioutil.ReadFile("fixtures/templates/gcp.json")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(session.Out.Contents()).Should(MatchJSON(contents))
+		})
 	})
 
-	It("generates a template with a provider", func() {
-		command := exec.Command(pathToMain,
-			"--manifest", "fixtures/environment.yml")
-		session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
+	Describe("AWS", func() {
+		It("generates a template with a provider", func() {
+			command := exec.Command(pathToMain,
+				"--manifest", "fixtures/manifests/aws.yml")
+			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
+			Expect(err).NotTo(HaveOccurred())
 
-		Eventually(session).Should(gexec.Exit(0))
+			Eventually(session).Should(gexec.Exit(0))
 
-		Expect(session.Out.Contents()).Should(MatchJSON(templateFixture))
+			contents, err := ioutil.ReadFile("fixtures/templates/aws.json")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(session.Out.Contents()).Should(MatchJSON(contents))
+		})
 	})
 })
