@@ -42,7 +42,7 @@ var _ = Describe("generate", func() {
 	})
 
 	Describe("Azure", func() {
-		PIt("generates a template with a provider", func() {
+		It("generates a template with a provider", func() {
 			command := exec.Command(pathToMain,
 				"--manifest", "fixtures/manifests/azure.yml")
 			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)

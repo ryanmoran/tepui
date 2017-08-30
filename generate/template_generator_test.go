@@ -100,5 +100,61 @@ var _ = Describe("TemplateGenerator", func() {
 				}`))
 			})
 		})
+
+		Context("for Azure", func() {
+			It("generates a template from the given manifest", func() {
+				manifest := parse.Manifest{
+					Provider: &parse.ManifestProvider{
+						Type: "azure",
+						Azure: parse.ManifestProviderAzure{
+							SubscriptionID: "some-subscription-id",
+							ClientID:       "some-client-id",
+							ClientSecret:   "some-client-secret",
+							TenantID:       "some-tenant-id",
+							Region:         "some-region",
+						},
+					},
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
+					},
+				}
+
+				generator := generate.NewTemplateGenerator()
+				template, err := generator.Generate(manifest)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(template).To(MatchJSON(`{
+					"provider": {
+						"azurerm": {
+							"subscription_id": "some-subscription-id",
+							"client_id": "some-client-id",
+							"client_secret": "some-client-secret",
+							"tenant_id": "some-tenant-id"
+						}
+					},
+					"resource": {
+						"azurerm_resource_group": {
+							"resource_group": {
+								"name": "some-environment",
+								"location": "some-region"
+							}
+						},
+						"azurerm_virtual_network": {
+							"network": {
+								"name": "some-network",
+								"resource_group_name": "some-environment",
+								"address_space": ["1.2.3.4/5"],
+								"location": "some-region"
+							}
+						}
+					}
+				}`))
+			})
+		})
 	})
 })

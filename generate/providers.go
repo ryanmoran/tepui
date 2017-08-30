@@ -12,9 +12,17 @@ type TemplateProviderAWS struct {
 	Region    string `json:"region"`
 }
 
+type TemplateProviderAzure struct {
+	SubscriptionID string `json:"subscription_id"`
+	ClientID       string `json:"client_id"`
+	ClientSecret   string `json:"client_secret"`
+	TenantID       string `json:"tenant_id"`
+}
+
 type provider interface {
 	_provider()
 }
 
 func (tpg TemplateProviderGoogle) _provider() {}
 func (tpa TemplateProviderAWS) _provider()    {}
+func (tpa TemplateProviderAzure) _provider()  {}

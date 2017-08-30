@@ -27,6 +27,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 				Name: network.Name,
 			})
 		}
+
 	case "aws":
 		template.Providers.Add(TemplateProviderAWS{
 			AccessKey: manifest.Provider.AWS.AccessKey,
@@ -42,6 +43,29 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 				},
 			})
 		}
+
+	case "azure":
+		template.Providers.Add(TemplateProviderAzure{
+			SubscriptionID: manifest.Provider.Azure.SubscriptionID,
+			ClientID:       manifest.Provider.Azure.ClientID,
+			ClientSecret:   manifest.Provider.Azure.ClientSecret,
+			TenantID:       manifest.Provider.Azure.TenantID,
+		})
+
+		template.Resources.Add("resource_group", TemplateResourceAzureResourceGroup{
+			Name:     manifest.Environment.Name,
+			Location: manifest.Provider.Azure.Region,
+		})
+
+		for _, network := range manifest.Environment.Networks {
+			template.Resources.Add("network", TemplateResourceAzureVirtualNetwork{
+				Name:              network.Name,
+				ResourceGroupName: manifest.Environment.Name,
+				AddressSpace:      []string{network.CIDR},
+				Location:          manifest.Provider.Azure.Region,
+			})
+		}
+
 	default:
 		panic("unknown provider")
 	}

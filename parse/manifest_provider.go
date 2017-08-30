@@ -3,9 +3,10 @@ package parse
 import "fmt"
 
 type ManifestProvider struct {
-	Type string
-	GCP  ManifestProviderGCP
-	AWS  ManifestProviderAWS
+	Type  string
+	GCP   ManifestProviderGCP
+	AWS   ManifestProviderAWS
+	Azure ManifestProviderAzure
 }
 
 func (mpp *ManifestProvider) UnmarshalYAML(unmarshal func(interface{}) error) error {
@@ -30,6 +31,12 @@ func (mpp *ManifestProvider) UnmarshalYAML(unmarshal func(interface{}) error) er
 		mpp.AWS.AccessKey = provider.Params["access_key"].(string)
 		mpp.AWS.SecretKey = provider.Params["secret_key"].(string)
 		mpp.AWS.Region = provider.Params["region"].(string)
+	case "azure":
+		mpp.Azure.SubscriptionID = provider.Params["subscription_id"].(string)
+		mpp.Azure.ClientID = provider.Params["client_id"].(string)
+		mpp.Azure.ClientSecret = provider.Params["client_secret"].(string)
+		mpp.Azure.TenantID = provider.Params["tenant_id"].(string)
+		mpp.Azure.Region = provider.Params["region"].(string)
 	default:
 		return fmt.Errorf("unknown provider type: %q", provider.Type)
 	}
@@ -47,4 +54,12 @@ type ManifestProviderAWS struct {
 	AccessKey string
 	SecretKey string
 	Region    string
+}
+
+type ManifestProviderAzure struct {
+	SubscriptionID string
+	ClientID       string
+	ClientSecret   string
+	TenantID       string
+	Region         string
 }

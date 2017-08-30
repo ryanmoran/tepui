@@ -67,6 +67,34 @@ var _ = Describe("ManifestParser", func() {
 			})
 		})
 
+		Context("for Azure", func() {
+			It("parses a manifest from a file path", func() {
+				manifest, err := parser.Parse("fixtures/azure.yml")
+				Expect(err).NotTo(HaveOccurred())
+				Expect(manifest).To(Equal(parse.Manifest{
+					Provider: &parse.ManifestProvider{
+						Type: "azure",
+						Azure: parse.ManifestProviderAzure{
+							SubscriptionID: "some-subscription-id",
+							ClientID:       "some-client-id",
+							ClientSecret:   "some-client-secret",
+							TenantID:       "some-tenant-id",
+							Region:         "some-region",
+						},
+					},
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
+					},
+				}))
+			})
+		})
+
 		Describe("error cases", func() {
 			Context("when the manifest file cannot be found", func() {
 				It("returns an error", func() {
