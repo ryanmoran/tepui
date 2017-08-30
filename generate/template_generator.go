@@ -42,7 +42,7 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 		panic("unknown provider")
 	}
 
-	output, err := json.Marshal(template)
+	output, err := json.MarshalIndent(template, "", "  ")
 	if err != nil {
 		return "", err
 	}
