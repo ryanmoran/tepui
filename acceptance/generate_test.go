@@ -14,7 +14,8 @@ var _ = Describe("generate", func() {
 	Describe("GCP", func() {
 		It("generates a template with a provider", func() {
 			command := exec.Command(pathToMain,
-				"--manifest", "fixtures/manifests/gcp.yml")
+				"--provider", "fixtures/providers/gcp.yml",
+				"--manifest", "fixtures/manifests/manifest.yml")
 			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 
@@ -29,7 +30,8 @@ var _ = Describe("generate", func() {
 	Describe("AWS", func() {
 		It("generates a template with a provider", func() {
 			command := exec.Command(pathToMain,
-				"--manifest", "fixtures/manifests/aws.yml")
+				"--provider", "fixtures/providers/aws.yml",
+				"--manifest", "fixtures/manifests/manifest.yml")
 			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 
@@ -44,7 +46,8 @@ var _ = Describe("generate", func() {
 	Describe("Azure", func() {
 		It("generates a template with a provider", func() {
 			command := exec.Command(pathToMain,
-				"--manifest", "fixtures/manifests/azure.yml")
+				"--provider", "fixtures/providers/azure.yml",
+				"--manifest", "fixtures/manifests/manifest.yml")
 			session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 

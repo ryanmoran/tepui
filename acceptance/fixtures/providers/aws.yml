@@ -1,0 +1,6 @@
+---
+type: aws
+params:
+  access_key: some-access-key
+  secret_key: some-secret-key
+  region: some-region

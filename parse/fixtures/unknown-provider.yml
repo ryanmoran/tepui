@@ -1,9 +1,0 @@
-provider:
-  type: banana
-  params:
-    credentials: some-credentials
-    project: some-project
-    region: some-region
-
-network:
-  name: some-network

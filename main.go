@@ -9,18 +9,26 @@ import (
 )
 
 func main() {
-	var manifestPath string
+	var (
+		manifestPath string
+		providerPath string
+	)
+
+	flag.StringVar(&providerPath, "provider", "", "path to provider")
 	flag.StringVar(&manifestPath, "manifest", "", "path to manifest")
 	flag.Parse()
 
-	parser := parse.NewManifestParser()
-	manifest, err := parser.Parse(manifestPath)
+	provider, err := parse.NewProviderParser().Parse(providerPath)
 	if err != nil {
 		panic(err)
 	}
 
-	generator := generate.NewTemplateGenerator()
-	template, err := generator.Generate(manifest)
+	manifest, err := parse.NewManifestParser().Parse(manifestPath)
+	if err != nil {
+		panic(err)
+	}
+
+	template, err := generate.NewTemplateGenerator().Generate(provider, manifest)
 	if err != nil {
 		panic(err)
 	}

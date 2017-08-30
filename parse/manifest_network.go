@@ -1,6 +1,6 @@
 package parse
 
-type ManifestEnvironmentNetwork struct {
+type ManifestNetwork struct {
 	Name string `yaml:"name"`
 	CIDR string `yaml:"cidr"`
 }

@@ -1,3 +1,0 @@
-provider:
-  type: gcp
-  params: 11  + %%% /////

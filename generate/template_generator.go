@@ -12,17 +12,17 @@ func NewTemplateGenerator() TemplateGenerator {
 	return TemplateGenerator{}
 }
 
-func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
+func (tg TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
 	template := NewTemplate()
-	switch manifest.Provider.Type {
+	switch provider.Type {
 	case "gcp":
 		template.Providers.Add(TemplateProviderGoogle{
-			Credentials: manifest.Provider.GCP.Credentials,
-			Project:     manifest.Provider.GCP.Project,
-			Region:      manifest.Provider.GCP.Region,
+			Credentials: provider.GCP.Credentials,
+			Project:     provider.GCP.Project,
+			Region:      provider.GCP.Region,
 		})
 
-		for _, network := range manifest.Environment.Networks {
+		for _, network := range manifest.Networks {
 			template.Resources.Add(network.Name, TemplateResourceGoogleComputeNetwork{
 				Name: network.Name,
 			})
@@ -30,12 +30,12 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 
 	case "aws":
 		template.Providers.Add(TemplateProviderAWS{
-			AccessKey: manifest.Provider.AWS.AccessKey,
-			SecretKey: manifest.Provider.AWS.SecretKey,
-			Region:    manifest.Provider.AWS.Region,
+			AccessKey: provider.AWS.AccessKey,
+			SecretKey: provider.AWS.SecretKey,
+			Region:    provider.AWS.Region,
 		})
 
-		for _, network := range manifest.Environment.Networks {
+		for _, network := range manifest.Networks {
 			template.Resources.Add(network.Name, TemplateResourceAWSVPC{
 				CIDRBlock: network.CIDR,
 				Tags: map[string]string{
@@ -46,23 +46,23 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 
 	case "azure":
 		template.Providers.Add(TemplateProviderAzure{
-			SubscriptionID: manifest.Provider.Azure.SubscriptionID,
-			ClientID:       manifest.Provider.Azure.ClientID,
-			ClientSecret:   manifest.Provider.Azure.ClientSecret,
-			TenantID:       manifest.Provider.Azure.TenantID,
+			SubscriptionID: provider.Azure.SubscriptionID,
+			ClientID:       provider.Azure.ClientID,
+			ClientSecret:   provider.Azure.ClientSecret,
+			TenantID:       provider.Azure.TenantID,
 		})
 
 		template.Resources.Add("resource_group", TemplateResourceAzureResourceGroup{
-			Name:     manifest.Environment.Name,
-			Location: manifest.Provider.Azure.Region,
+			Name:     manifest.Name,
+			Location: provider.Azure.Region,
 		})
 
-		for _, network := range manifest.Environment.Networks {
+		for _, network := range manifest.Networks {
 			template.Resources.Add(network.Name, TemplateResourceAzureVirtualNetwork{
 				Name:              network.Name,
 				ResourceGroupName: "${azurerm_resource_group.resource_group.name}",
 				AddressSpace:      []string{network.CIDR},
-				Location:          manifest.Provider.Azure.Region,
+				Location:          provider.Azure.Region,
 			})
 		}
 

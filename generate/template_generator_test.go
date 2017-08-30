@@ -10,30 +10,33 @@ import (
 
 var _ = Describe("TemplateGenerator", func() {
 	Describe("Generate", func() {
+		var manifest parse.Manifest
+
+		BeforeEach(func() {
+			manifest = parse.Manifest{
+				Name: "some-environment",
+				Networks: []parse.ManifestNetwork{
+					{
+						Name: "some-network",
+						CIDR: "1.2.3.4/5",
+					},
+				},
+			}
+		})
+
 		Context("for GCP", func() {
 			It("generates a template from the given manifest", func() {
-				manifest := parse.Manifest{
-					Provider: &parse.ManifestProvider{
-						Type: "gcp",
-						GCP: parse.ManifestProviderGCP{
-							Credentials: "some-credentials",
-							Project:     "some-project",
-							Region:      "some-region",
-						},
-					},
-					Environment: parse.ManifestEnvironment{
-						Name: "some-environment",
-						Networks: []parse.ManifestEnvironmentNetwork{
-							{
-								Name: "some-network",
-								CIDR: "1.2.3.4/5",
-							},
-						},
+				provider := parse.Provider{
+					Type: "gcp",
+					GCP: parse.ProviderGCP{
+						Credentials: "some-credentials",
+						Project:     "some-project",
+						Region:      "some-region",
 					},
 				}
 
 				generator := generate.NewTemplateGenerator()
-				template, err := generator.Generate(manifest)
+				template, err := generator.Generate(provider, manifest)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(template).To(MatchJSON(`{
 					"provider": {
@@ -56,28 +59,17 @@ var _ = Describe("TemplateGenerator", func() {
 
 		Context("for AWS", func() {
 			It("generates a template from the given manifest", func() {
-				manifest := parse.Manifest{
-					Provider: &parse.ManifestProvider{
-						Type: "aws",
-						AWS: parse.ManifestProviderAWS{
-							AccessKey: "some-access-key",
-							SecretKey: "some-secret-key",
-							Region:    "some-region",
-						},
-					},
-					Environment: parse.ManifestEnvironment{
-						Name: "some-environment",
-						Networks: []parse.ManifestEnvironmentNetwork{
-							{
-								Name: "some-network",
-								CIDR: "1.2.3.4/5",
-							},
-						},
+				provider := parse.Provider{
+					Type: "aws",
+					AWS: parse.ProviderAWS{
+						AccessKey: "some-access-key",
+						SecretKey: "some-secret-key",
+						Region:    "some-region",
 					},
 				}
 
 				generator := generate.NewTemplateGenerator()
-				template, err := generator.Generate(manifest)
+				template, err := generator.Generate(provider, manifest)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(template).To(MatchJSON(`{
 					"provider": {
@@ -103,30 +95,19 @@ var _ = Describe("TemplateGenerator", func() {
 
 		Context("for Azure", func() {
 			It("generates a template from the given manifest", func() {
-				manifest := parse.Manifest{
-					Provider: &parse.ManifestProvider{
-						Type: "azure",
-						Azure: parse.ManifestProviderAzure{
-							SubscriptionID: "some-subscription-id",
-							ClientID:       "some-client-id",
-							ClientSecret:   "some-client-secret",
-							TenantID:       "some-tenant-id",
-							Region:         "some-region",
-						},
-					},
-					Environment: parse.ManifestEnvironment{
-						Name: "some-environment",
-						Networks: []parse.ManifestEnvironmentNetwork{
-							{
-								Name: "some-network",
-								CIDR: "1.2.3.4/5",
-							},
-						},
+				provider := parse.Provider{
+					Type: "azure",
+					Azure: parse.ProviderAzure{
+						SubscriptionID: "some-subscription-id",
+						ClientID:       "some-client-id",
+						ClientSecret:   "some-client-secret",
+						TenantID:       "some-tenant-id",
+						Region:         "some-region",
 					},
 				}
 
 				generator := generate.NewTemplateGenerator()
-				template, err := generator.Generate(manifest)
+				template, err := generator.Generate(provider, manifest)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(template).To(MatchJSON(`{
 					"provider": {
