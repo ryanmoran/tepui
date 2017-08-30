@@ -28,9 +28,14 @@ var _ = Describe("ManifestParser", func() {
 							Region:      "some-region",
 						},
 					},
-					Network: parse.ManifestNetwork{
-						Name: "some-network",
-						CIDR: "1.2.3.4/5",
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
 					},
 				}))
 			})
@@ -49,9 +54,14 @@ var _ = Describe("ManifestParser", func() {
 							Region:    "some-region",
 						},
 					},
-					Network: parse.ManifestNetwork{
-						Name: "some-network",
-						CIDR: "1.2.3.4/5",
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
 					},
 				}))
 			})

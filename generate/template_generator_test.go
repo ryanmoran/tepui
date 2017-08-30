@@ -21,9 +21,14 @@ var _ = Describe("TemplateGenerator", func() {
 							Region:      "some-region",
 						},
 					},
-					Network: parse.ManifestNetwork{
-						Name: "some-network",
-						CIDR: "1.2.3.4/5",
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
 					},
 				}
 
@@ -31,21 +36,21 @@ var _ = Describe("TemplateGenerator", func() {
 				template, err := generator.Generate(manifest)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(template).To(MatchJSON(`{
-				"provider": {
-					"google": {
-						"credentials": "some-credentials",
-						"project": "some-project",
-						"region": "some-region"
-					}
-				},
-				"resource": {
-					"google_compute_network": {
-						"network": {
-							"name": "some-network"
+					"provider": {
+						"google": {
+							"credentials": "some-credentials",
+							"project": "some-project",
+							"region": "some-region"
+						}
+					},
+					"resource": {
+						"google_compute_network": {
+							"network": {
+								"name": "some-network"
+							}
 						}
 					}
-				}
-			}`))
+				}`))
 			})
 		})
 
@@ -60,9 +65,14 @@ var _ = Describe("TemplateGenerator", func() {
 							Region:    "some-region",
 						},
 					},
-					Network: parse.ManifestNetwork{
-						Name: "some-network",
-						CIDR: "1.2.3.4/5",
+					Environment: parse.ManifestEnvironment{
+						Name: "some-environment",
+						Networks: []parse.ManifestEnvironmentNetwork{
+							{
+								Name: "some-network",
+								CIDR: "1.2.3.4/5",
+							},
+						},
 					},
 				}
 
@@ -70,24 +80,24 @@ var _ = Describe("TemplateGenerator", func() {
 				template, err := generator.Generate(manifest)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(template).To(MatchJSON(`{
-				"provider": {
-					"aws": {
-						"access_key": "some-access-key",
-						"secret_key": "some-secret-key",
-						"region": "some-region"
-					}
-				},
-				"resource": {
-					"aws_vpc": {
-						"network": {
-							"cidr_block": "1.2.3.4/5",
-							"tags": {
-								"name": "some-network"
+					"provider": {
+						"aws": {
+							"access_key": "some-access-key",
+							"secret_key": "some-secret-key",
+							"region": "some-region"
+						}
+					},
+					"resource": {
+						"aws_vpc": {
+							"network": {
+								"cidr_block": "1.2.3.4/5",
+								"tags": {
+									"name": "some-network"
+								}
 							}
 						}
 					}
-				}
-			}`))
+				}`))
 			})
 		})
 	})

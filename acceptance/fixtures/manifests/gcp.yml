@@ -6,6 +6,8 @@ provider:
     project: some-project
     region: some-region
 
-network:
-  name: some-network
-  cidr: 1.2.3.4/5
+environment:
+  name: some-environment
+  networks:
+  - name: some-network
+    cidr: 1.2.3.4/5

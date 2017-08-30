@@ -22,9 +22,11 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 			Region:      manifest.Provider.GCP.Region,
 		})
 
-		template.Resources.Add("network", TemplateResourceGoogleComputeNetwork{
-			Name: manifest.Network.Name,
-		})
+		for _, network := range manifest.Environment.Networks {
+			template.Resources.Add("network", TemplateResourceGoogleComputeNetwork{
+				Name: network.Name,
+			})
+		}
 	case "aws":
 		template.Providers.Add(TemplateProviderAWS{
 			AccessKey: manifest.Provider.AWS.AccessKey,
@@ -32,12 +34,14 @@ func (tg TemplateGenerator) Generate(manifest parse.Manifest) (string, error) {
 			Region:    manifest.Provider.AWS.Region,
 		})
 
-		template.Resources.Add("network", TemplateResourceAWSVPC{
-			CIDRBlock: manifest.Network.CIDR,
-			Tags: map[string]string{
-				"name": manifest.Network.Name,
-			},
-		})
+		for _, network := range manifest.Environment.Networks {
+			template.Resources.Add("network", TemplateResourceAWSVPC{
+				CIDRBlock: network.CIDR,
+				Tags: map[string]string{
+					"name": network.Name,
+				},
+			})
+		}
 	default:
 		panic("unknown provider")
 	}
