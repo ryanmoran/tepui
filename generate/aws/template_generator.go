@@ -23,7 +23,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, generate.TemplateResourceAWSVPC{
+		template.Resources.Add(network.Name, VPC{
 			CIDRBlock: network.CIDR,
 			Tags: map[string]string{
 				"name": network.Name,

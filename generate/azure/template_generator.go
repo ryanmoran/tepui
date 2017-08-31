@@ -22,13 +22,13 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 		TenantID:       provider.Azure.TenantID,
 	})
 
-	template.Resources.Add("resource_group", generate.TemplateResourceAzureResourceGroup{
+	template.Resources.Add("resource_group", ResourceGroup{
 		Name:     manifest.Name,
 		Location: provider.Azure.Region,
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, generate.TemplateResourceAzureVirtualNetwork{
+		template.Resources.Add(network.Name, VirtualNetwork{
 			Name:              network.Name,
 			ResourceGroupName: "${azurerm_resource_group.resource_group.name}",
 			AddressSpace:      []string{network.CIDR},

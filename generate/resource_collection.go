@@ -11,11 +11,11 @@ func (trc *TemplateResourceCollection) Add(name string, r resource) {
 		trc.resources = make(map[string]map[string]resource)
 	}
 
-	if trc.resources[r.resourceType()] == nil {
-		trc.resources[r.resourceType()] = make(map[string]resource)
+	if trc.resources[r.ResourceType()] == nil {
+		trc.resources[r.ResourceType()] = make(map[string]resource)
 	}
 
-	trc.resources[r.resourceType()][name] = r
+	trc.resources[r.ResourceType()][name] = r
 }
 
 func (trc TemplateResourceCollection) MarshalJSON() ([]byte, error) {

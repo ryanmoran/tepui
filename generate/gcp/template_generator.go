@@ -22,7 +22,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, generate.TemplateResourceGoogleComputeNetwork{
+		template.Resources.Add(network.Name, ComputeNetwork{
 			Name: network.Name,
 		})
 	}
