@@ -1,28 +1,29 @@
-package generate
+package aws
 
 import (
 	"encoding/json"
 
+	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
-type AWSTemplateGenerator struct{}
+type TemplateGenerator struct{}
 
-func NewAWSTemplateGenerator() AWSTemplateGenerator {
-	return AWSTemplateGenerator{}
+func NewTemplateGenerator() TemplateGenerator {
+	return TemplateGenerator{}
 }
 
-func (g AWSTemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
-	template := NewTemplate()
+func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
+	template := generate.NewTemplate()
 
-	template.Providers.Add(TemplateProviderAWS{
+	template.Providers.Add(generate.TemplateProviderAWS{
 		AccessKey: provider.AWS.AccessKey,
 		SecretKey: provider.AWS.SecretKey,
 		Region:    provider.AWS.Region,
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, TemplateResourceAWSVPC{
+		template.Resources.Add(network.Name, generate.TemplateResourceAWSVPC{
 			CIDRBlock: network.CIDR,
 			Tags: map[string]string{
 				"name": network.Name,

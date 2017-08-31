@@ -5,6 +5,9 @@ import (
 	"fmt"
 
 	"github.com/pivotal-cf/tepui/generate"
+	"github.com/pivotal-cf/tepui/generate/aws"
+	"github.com/pivotal-cf/tepui/generate/azure"
+	"github.com/pivotal-cf/tepui/generate/gcp"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -32,11 +35,11 @@ func main() {
 
 	switch provider.Type {
 	case "gcp":
-		generator = generate.NewGCPTemplateGenerator()
+		generator = gcp.NewTemplateGenerator()
 	case "aws":
-		generator = generate.NewAWSTemplateGenerator()
+		generator = aws.NewTemplateGenerator()
 	case "azure":
-		generator = generate.NewAzureTemplateGenerator()
+		generator = azure.NewTemplateGenerator()
 	}
 
 	template, err := generator.Generate(provider, manifest)

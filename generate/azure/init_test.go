@@ -1,4 +1,4 @@
-package generate_test
+package azure_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestGenerate(t *testing.T) {
+func TestAzure(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "generate")
+	RunSpecs(t, "generate/azure")
 }

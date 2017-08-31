@@ -1,14 +1,14 @@
-package generate_test
+package aws_test
 
 import (
-	"github.com/pivotal-cf/tepui/generate"
+	"github.com/pivotal-cf/tepui/generate/aws"
 	"github.com/pivotal-cf/tepui/parse"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("AWSTemplateGenerator", func() {
+var _ = Describe("TemplateGenerator", func() {
 	Describe("Generate", func() {
 		It("generates a template from the given manifest", func() {
 			provider := parse.Provider{
@@ -29,7 +29,7 @@ var _ = Describe("AWSTemplateGenerator", func() {
 				},
 			}
 
-			template, err := generate.NewAWSTemplateGenerator().Generate(provider, manifest)
+			template, err := aws.NewTemplateGenerator().Generate(provider, manifest)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(template).To(MatchJSON(`{
 				"provider": {

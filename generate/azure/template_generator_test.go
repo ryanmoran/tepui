@@ -1,14 +1,14 @@
-package generate_test
+package azure_test
 
 import (
-	"github.com/pivotal-cf/tepui/generate"
+	"github.com/pivotal-cf/tepui/generate/azure"
 	"github.com/pivotal-cf/tepui/parse"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("AzureTemplateGenerator", func() {
+var _ = Describe("TemplateGenerator", func() {
 	Describe("Generate", func() {
 		It("generates a template from the given manifest", func() {
 			provider := parse.Provider{
@@ -31,7 +31,7 @@ var _ = Describe("AzureTemplateGenerator", func() {
 				},
 			}
 
-			generator := generate.NewAzureTemplateGenerator()
+			generator := azure.NewTemplateGenerator()
 			template, err := generator.Generate(provider, manifest)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(template).To(MatchJSON(`{
