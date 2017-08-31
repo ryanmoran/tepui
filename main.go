@@ -28,7 +28,18 @@ func main() {
 		panic(err)
 	}
 
-	template, err := generate.NewTemplateGenerator().Generate(provider, manifest)
+	var generator generate.Generator
+
+	switch provider.Type {
+	case "gcp":
+		generator = generate.NewGCPTemplateGenerator()
+	case "aws":
+		generator = generate.NewAWSTemplateGenerator()
+	case "azure":
+		generator = generate.NewAzureTemplateGenerator()
+	}
+
+	template, err := generator.Generate(provider, manifest)
 	if err != nil {
 		panic(err)
 	}
