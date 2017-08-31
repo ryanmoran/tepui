@@ -3,7 +3,6 @@ package azure
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -14,21 +13,22 @@ func NewTemplateGenerator() TemplateGenerator {
 }
 
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
-	template := generate.NewTemplate()
-	template.Providers.Add(Provider{
+	template := NewTemplate(Provider{
 		SubscriptionID: provider.Azure.SubscriptionID,
 		ClientID:       provider.Azure.ClientID,
 		ClientSecret:   provider.Azure.ClientSecret,
 		TenantID:       provider.Azure.TenantID,
 	})
 
-	template.Resources.Add("resource_group", ResourceGroup{
+	template.Resources.ResourceGroups = append(template.Resources.ResourceGroups, ResourceGroup{
+		name:     "resource_group",
 		Name:     manifest.Name,
 		Location: provider.Azure.Region,
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, VirtualNetwork{
+		template.Resources.VirtualNetworks = append(template.Resources.VirtualNetworks, VirtualNetwork{
+			name:              network.Name,
 			Name:              network.Name,
 			ResourceGroupName: "${azurerm_resource_group.resource_group.name}",
 			AddressSpace:      []string{network.CIDR},

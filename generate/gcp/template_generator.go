@@ -3,7 +3,6 @@ package gcp
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -14,15 +13,15 @@ func NewTemplateGenerator() TemplateGenerator {
 }
 
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
-	template := generate.NewTemplate()
-	template.Providers.Add(Provider{
+	template := NewTemplate(Provider{
 		Credentials: provider.GCP.Credentials,
 		Project:     provider.GCP.Project,
 		Region:      provider.GCP.Region,
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, ComputeNetwork{
+		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, ComputeNetwork{
+			name: network.Name,
 			Name: network.Name,
 		})
 	}
