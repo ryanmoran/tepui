@@ -15,7 +15,7 @@ func NewTemplateGenerator() TemplateGenerator {
 
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
 	template := generate.NewTemplate()
-	template.Providers.Add(generate.TemplateProviderGoogle{
+	template.Providers.Add(Provider{
 		Credentials: provider.GCP.Credentials,
 		Project:     provider.GCP.Project,
 		Region:      provider.GCP.Region,

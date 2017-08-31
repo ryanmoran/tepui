@@ -11,16 +11,7 @@ func (tpc *TemplateProviderCollection) Add(p provider) {
 		tpc.providers = make(map[string]provider)
 	}
 
-	switch p.(type) {
-	case TemplateProviderGoogle:
-		tpc.providers["google"] = p
-	case TemplateProviderAWS:
-		tpc.providers["aws"] = p
-	case TemplateProviderAzure:
-		tpc.providers["azurerm"] = p
-	default:
-		panic("unknown provider")
-	}
+	tpc.providers[p.ProviderName()] = p
 }
 
 func (tpc TemplateProviderCollection) MarshalJSON() ([]byte, error) {

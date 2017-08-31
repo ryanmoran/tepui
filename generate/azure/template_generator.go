@@ -15,7 +15,7 @@ func NewTemplateGenerator() TemplateGenerator {
 
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
 	template := generate.NewTemplate()
-	template.Providers.Add(generate.TemplateProviderAzure{
+	template.Providers.Add(Provider{
 		SubscriptionID: provider.Azure.SubscriptionID,
 		ClientID:       provider.Azure.ClientID,
 		ClientSecret:   provider.Azure.ClientSecret,

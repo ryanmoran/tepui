@@ -16,7 +16,7 @@ func NewTemplateGenerator() TemplateGenerator {
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
 	template := generate.NewTemplate()
 
-	template.Providers.Add(generate.TemplateProviderAWS{
+	template.Providers.Add(Provider{
 		AccessKey: provider.AWS.AccessKey,
 		SecretKey: provider.AWS.SecretKey,
 		Region:    provider.AWS.Region,
