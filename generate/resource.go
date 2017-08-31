@@ -1,5 +1,5 @@
 package generate
 
-type resource interface {
+type Resource interface {
 	ResourceType() string
 }

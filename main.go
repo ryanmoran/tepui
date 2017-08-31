@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 
 	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/generate/aws"
@@ -23,12 +24,12 @@ func main() {
 
 	provider, err := parse.NewProviderParser().Parse(providerPath)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	manifest, err := parse.NewManifestParser().Parse(manifestPath)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	var generator generate.Generator
@@ -44,7 +45,7 @@ func main() {
 
 	template, err := generator.Generate(provider, manifest)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	fmt.Println(template)

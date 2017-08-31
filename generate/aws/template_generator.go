@@ -3,7 +3,6 @@ package aws
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -14,16 +13,15 @@ func NewTemplateGenerator() TemplateGenerator {
 }
 
 func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
-	template := generate.NewTemplate()
-
-	template.Providers.Add(Provider{
+	template := NewTemplate(Provider{
 		AccessKey: provider.AWS.AccessKey,
 		SecretKey: provider.AWS.SecretKey,
 		Region:    provider.AWS.Region,
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.Add(network.Name, VPC{
+		template.Resources.VPCs = append(template.Resources.VPCs, VPC{
+			name:      network.Name,
 			CIDRBlock: network.CIDR,
 			Tags: map[string]string{
 				"name": network.Name,

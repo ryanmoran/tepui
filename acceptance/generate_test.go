@@ -58,4 +58,32 @@ var _ = Describe("generate", func() {
 			Expect(session.Out.Contents()).Should(MatchJSON(contents))
 		})
 	})
+
+	Describe("failure cases", func() {
+		Context("when the provider file does not exist", func() {
+			It("returns an error", func() {
+				command := exec.Command(pathToMain,
+					"--provider", "fixtures/providers/notfound.yml",
+					"--manifest", "fixtures/manifests/manifest.yml")
+				session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
+				Expect(err).NotTo(HaveOccurred())
+
+				Eventually(session).Should(gexec.Exit(1))
+				Expect(session.Err.Contents()).Should(ContainSubstring("no such file or directory"))
+			})
+		})
+
+		Context("when the manifest file does not exist", func() {
+			It("returns an error", func() {
+				command := exec.Command(pathToMain,
+					"--provider", "fixtures/providers/gcp.yml",
+					"--manifest", "fixtures/manifests/notfound.yml")
+				session, err := gexec.Start(command, GinkgoWriter, GinkgoWriter)
+				Expect(err).NotTo(HaveOccurred())
+
+				Eventually(session).Should(gexec.Exit(1))
+				Expect(session.Err.Contents()).Should(ContainSubstring("no such file or directory"))
+			})
+		})
+	})
 })
