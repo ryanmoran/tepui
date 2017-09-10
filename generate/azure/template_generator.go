@@ -3,6 +3,7 @@ package azure
 import (
 	"encoding/json"
 
+	"github.com/pivotal-cf/tepui/generate/azure/resources"
 	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse"
 )
@@ -23,7 +24,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 
 	template.Resources.ResourceGroups = append(template.Resources.ResourceGroups, terraform.NamedResource{
 		Name: "resource_group",
-		Resource: ResourceGroup{
+		Resource: resources.ResourceGroup{
 			Name:     manifest.Name,
 			Location: provider.Azure.Region,
 		},
@@ -32,7 +33,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	for _, network := range manifest.Networks {
 		template.Resources.VirtualNetworks = append(template.Resources.VirtualNetworks, terraform.NamedResource{
 			Name: network.Name,
-			Resource: VirtualNetwork{
+			Resource: resources.VirtualNetwork{
 				Name:              network.Name,
 				ResourceGroupName: "${azurerm_resource_group.resource_group.name}",
 				AddressSpace:      []string{network.CIDR},

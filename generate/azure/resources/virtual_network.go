@@ -1,13 +1,4 @@
-package azure
-
-type ResourceGroup struct {
-	Name     string `json:"name"`
-	Location string `json:"location"`
-}
-
-func (rg ResourceGroup) ResourceType() string {
-	return "azurerm_resource_group"
-}
+package resources
 
 type VirtualNetwork struct {
 	Name              string   `json:"name"`
