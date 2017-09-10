@@ -3,6 +3,7 @@ package gcp
 import (
 	"encoding/json"
 
+	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -20,7 +21,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, NamedResource{
+		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, terraform.NamedResource{
 			Name: network.Name,
 			Resource: ComputeNetwork{
 				Name: network.Name,

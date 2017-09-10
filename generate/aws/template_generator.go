@@ -3,6 +3,7 @@ package aws
 import (
 	"encoding/json"
 
+	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse"
 )
 
@@ -20,7 +21,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.VPCs = append(template.Resources.VPCs, NamedResource{
+		template.Resources.VPCs = append(template.Resources.VPCs, terraform.NamedResource{
 			Name: network.Name,
 			Resource: VPC{
 				CIDRBlock: network.CIDR,

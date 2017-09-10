@@ -1,9 +1,11 @@
 package aws
 
+import "github.com/pivotal-cf/tepui/generate/internal/terraform"
+
 type Template struct {
 	Provider  Provider `json:"provider"`
 	Resources struct {
-		VPCs Resources `json:"aws_vpc"`
+		VPCs terraform.Resources `json:"aws_vpc"`
 	} `json:"resource"`
 }
 

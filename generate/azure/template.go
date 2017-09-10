@@ -1,10 +1,12 @@
 package azure
 
+import "github.com/pivotal-cf/tepui/generate/internal/terraform"
+
 type Template struct {
 	Provider  Provider `json:"provider"`
 	Resources struct {
-		ResourceGroups  Resources `json:"azurerm_resource_group"`
-		VirtualNetworks Resources `json:"azurerm_virtual_network"`
+		ResourceGroups  terraform.Resources `json:"azurerm_resource_group"`
+		VirtualNetworks terraform.Resources `json:"azurerm_virtual_network"`
 	} `json:"resource"`
 }
 
