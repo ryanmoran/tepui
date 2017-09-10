@@ -19,6 +19,10 @@ func (nr NamedResource) Attribute(attr string) string {
 	return fmt.Sprintf("${%s.%s.%s}", nr.Type(), nr.Name, attr)
 }
 
+func (nr NamedResource) SelfLink() string {
+	return nr.Attribute("self_link")
+}
+
 func camelToSnake(input string) string {
 	var output string
 

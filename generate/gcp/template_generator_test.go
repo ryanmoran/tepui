@@ -25,6 +25,12 @@ var _ = Describe("TemplateGenerator", func() {
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
+						Subnets: []parse.ManifestSubnet{
+							{
+								Name: "some-subnet",
+								CIDR: "2.3.4.5/6",
+							},
+						},
 					},
 				},
 			}
@@ -43,6 +49,13 @@ var _ = Describe("TemplateGenerator", func() {
 					"google_compute_network": {
 						"some-network": {
 							"name": "some-network"
+						}
+					},
+					"google_compute_subnetwork": {
+						"some-subnet": {
+							"name": "some-subnet",
+							"ip_cidr_range": "2.3.4.5/6",
+							"network": "${google_compute_network.some-network.self_link}"
 						}
 					}
 				}

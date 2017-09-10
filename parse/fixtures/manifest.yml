@@ -3,3 +3,6 @@ name: some-environment
 networks:
 - name: some-network
   cidr: 1.2.3.4/5
+  subnets:
+  - name: some-subnet
+    cidr: 2.3.4.5/6

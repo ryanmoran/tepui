@@ -25,6 +25,12 @@ var _ = Describe("TemplateGenerator", func() {
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
+						Subnets: []parse.ManifestSubnet{
+							{
+								Name: "some-subnet",
+								CIDR: "2.3.4.5/6",
+							},
+						},
 					},
 				},
 			}
@@ -44,7 +50,18 @@ var _ = Describe("TemplateGenerator", func() {
 						"some-network": {
 							"cidr_block": "1.2.3.4/5",
 							"tags": {
-								"name": "some-network"
+								"name": "some-network",
+								"environment": "some-environment"
+							}
+						}
+					},
+					"aws_subnet": {
+						"some-subnet": {
+							"vpc_id": "${aws_vpc.some-network.id}",
+							"cidr_block": "2.3.4.5/6",
+							"tags": {
+								"name": "some-subnet",
+								"environment": "some-environment"
 							}
 						}
 					}

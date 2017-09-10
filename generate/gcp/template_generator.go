@@ -22,12 +22,27 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources = append(template.Resources, terraform.NamedResource{
+		networkResource := terraform.NamedResource{
 			Name: network.Name,
 			Resource: resources.GoogleComputeNetwork{
 				Name: network.Name,
 			},
-		})
+		}
+
+		template.Resources = append(template.Resources, networkResource)
+
+		for _, subnet := range network.Subnets {
+			subnetResource := terraform.NamedResource{
+				Name: subnet.Name,
+				Resource: resources.GoogleComputeSubnetwork{
+					Name:        subnet.Name,
+					IPCIDRRange: subnet.CIDR,
+					Network:     networkResource.SelfLink(),
+				},
+			}
+
+			template.Resources = append(template.Resources, subnetResource)
+		}
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

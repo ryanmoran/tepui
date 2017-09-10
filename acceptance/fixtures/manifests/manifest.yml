@@ -1,7 +1,18 @@
 ---
 name: some-environment
+
 networks:
 - name: some-network-1
   cidr: 1.2.3.4/5
+  subnets:
+  - name: some-subnet-1
+    cidr: 2.3.4.5/6
+  - name: some-subnet-2
+    cidr: 3.4.5.6/7
 - name: some-network-2
   cidr: 6.7.8.9/10
+  subnets:
+  - name: some-subnet-3
+    cidr: 7.8.9.10/11
+  - name: some-subnet-4
+    cidr: 8.9.10.11/12

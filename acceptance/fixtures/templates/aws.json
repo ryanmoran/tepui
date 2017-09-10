@@ -11,13 +11,49 @@
       "some-network-1": {
         "cidr_block": "1.2.3.4/5",
         "tags": {
-          "name": "some-network-1"
+          "name": "some-network-1",
+          "environment": "some-environment"
         }
       },
       "some-network-2": {
         "cidr_block": "6.7.8.9/10",
         "tags": {
-          "name": "some-network-2"
+          "name": "some-network-2",
+          "environment": "some-environment"
+        }
+      }
+    },
+    "aws_subnet": {
+      "some-subnet-1": {
+        "vpc_id": "${aws_vpc.some-network-1.id}",
+        "cidr_block": "2.3.4.5/6",
+        "tags": {
+          "name": "some-subnet-1",
+          "environment": "some-environment"
+        }
+      },
+      "some-subnet-2": {
+        "vpc_id": "${aws_vpc.some-network-1.id}",
+        "cidr_block": "3.4.5.6/7",
+        "tags": {
+          "name": "some-subnet-2",
+          "environment": "some-environment"
+        }
+      },
+      "some-subnet-3": {
+        "vpc_id": "${aws_vpc.some-network-2.id}",
+        "cidr_block": "7.8.9.10/11",
+        "tags": {
+          "name": "some-subnet-3",
+          "environment": "some-environment"
+        }
+      },
+      "some-subnet-4": {
+        "vpc_id": "${aws_vpc.some-network-2.id}",
+        "cidr_block": "8.9.10.11/12",
+        "tags": {
+          "name": "some-subnet-4",
+          "environment": "some-environment"
         }
       }
     }

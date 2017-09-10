@@ -33,7 +33,7 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	template.Resources = append(template.Resources, resourceGroup)
 
 	for _, network := range manifest.Networks {
-		template.Resources = append(template.Resources, terraform.NamedResource{
+		networkResource := terraform.NamedResource{
 			Name: network.Name,
 			Resource: resources.AzurermVirtualNetwork{
 				Name:              network.Name,
@@ -41,7 +41,23 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 				AddressSpace:      []string{network.CIDR},
 				Location:          provider.Azure.Region,
 			},
-		})
+		}
+
+		template.Resources = append(template.Resources, networkResource)
+
+		for _, subnet := range network.Subnets {
+			subnetResource := terraform.NamedResource{
+				Name: subnet.Name,
+				Resource: resources.AzurermSubnet{
+					Name:               subnet.Name,
+					ResourceGroupName:  resourceGroup.Attribute("name"),
+					VirtualNetworkName: networkResource.Attribute("name"),
+					AddressPrefix:      subnet.CIDR,
+				},
+			}
+
+			template.Resources = append(template.Resources, subnetResource)
+		}
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

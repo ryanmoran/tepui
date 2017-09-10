@@ -22,15 +22,34 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources = append(template.Resources, terraform.NamedResource{
+		networkResource := terraform.NamedResource{
 			Name: network.Name,
 			Resource: resources.AwsVpc{
 				CIDRBlock: network.CIDR,
 				Tags: map[string]string{
-					"name": network.Name,
+					"name":        network.Name,
+					"environment": manifest.Name,
 				},
 			},
-		})
+		}
+
+		template.Resources = append(template.Resources, networkResource)
+
+		for _, subnet := range network.Subnets {
+			subnetResource := terraform.NamedResource{
+				Name: subnet.Name,
+				Resource: resources.AwsSubnet{
+					VPCID:     networkResource.Attribute("id"),
+					CIDRBlock: subnet.CIDR,
+					Tags: map[string]string{
+						"name":        subnet.Name,
+						"environment": manifest.Name,
+					},
+				},
+			}
+
+			template.Resources = append(template.Resources, subnetResource)
+		}
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

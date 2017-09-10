@@ -24,6 +24,12 @@ var _ = Describe("ManifestParser", func() {
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
+						Subnets: []parse.ManifestSubnet{
+							{
+								Name: "some-subnet",
+								CIDR: "2.3.4.5/6",
+							},
+						},
 					},
 				},
 			}))

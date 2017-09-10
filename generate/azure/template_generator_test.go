@@ -27,6 +27,12 @@ var _ = Describe("TemplateGenerator", func() {
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
+						Subnets: []parse.ManifestSubnet{
+							{
+								Name: "some-subnet",
+								CIDR: "2.3.4.5/6",
+							},
+						},
 					},
 				},
 			}
@@ -56,6 +62,14 @@ var _ = Describe("TemplateGenerator", func() {
 							"resource_group_name": "${azurerm_resource_group.resource_group.name}",
 							"address_space": ["1.2.3.4/5"],
 							"location": "some-region"
+						}
+					},
+					"azurerm_subnet": {
+						"some-subnet": {
+							"name": "some-subnet",
+							"resource_group_name": "${azurerm_resource_group.resource_group.name}",
+							"virtual_network_name": "${azurerm_virtual_network.some-network.name}",
+							"address_prefix": "2.3.4.5/6"
 						}
 					}
 				}

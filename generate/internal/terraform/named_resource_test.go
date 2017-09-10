@@ -29,4 +29,10 @@ var _ = Describe("NamedResource", func() {
 			Expect(namedResource.Attribute("something")).To(Equal("${some_cloud_resource.some-resource.something}"))
 		})
 	})
+
+	Describe("SelfLink", func() {
+		It("returns the terraform self_link for this named resource", func() {
+			Expect(namedResource.SelfLink()).To(Equal("${some_cloud_resource.some-resource.self_link}"))
+		})
+	})
 })
