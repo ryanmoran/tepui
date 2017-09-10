@@ -1,6 +1,6 @@
 package resources
 
-type ResourceGroup struct {
+type AzurermResourceGroup struct {
 	Name     string `json:"name"`
 	Location string `json:"location"`
 }

@@ -22,9 +22,9 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.VPCs = append(template.Resources.VPCs, terraform.NamedResource{
+		template.Resources = append(template.Resources, terraform.NamedResource{
 			Name: network.Name,
-			Resource: resources.VPC{
+			Resource: resources.AwsVpc{
 				CIDRBlock: network.CIDR,
 				Tags: map[string]string{
 					"name": network.Name,

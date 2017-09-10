@@ -1,5 +1,5 @@
 package resources
 
-type ComputeNetwork struct {
+type GoogleComputeNetwork struct {
 	Name string `json:"name"`
 }

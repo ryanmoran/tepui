@@ -22,9 +22,9 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, terraform.NamedResource{
+		template.Resources = append(template.Resources, terraform.NamedResource{
 			Name: network.Name,
-			Resource: resources.ComputeNetwork{
+			Resource: resources.GoogleComputeNetwork{
 				Name: network.Name,
 			},
 		})

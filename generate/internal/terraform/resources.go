@@ -5,18 +5,15 @@ import "encoding/json"
 type Resources []NamedResource
 
 func (r Resources) MarshalJSON() ([]byte, error) {
-	m := map[string]Resource{}
+	m := map[string]map[string]Resource{}
 
 	for _, nr := range r {
-		m[nr.Name] = nr.Resource
+		if m[nr.Type()] == nil {
+			m[nr.Type()] = map[string]Resource{}
+		}
+
+		m[nr.Type()][nr.Name] = nr.Resource
 	}
 
 	return json.Marshal(m)
 }
-
-type NamedResource struct {
-	Name     string
-	Resource Resource
-}
-
-type Resource interface{}
