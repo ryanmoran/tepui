@@ -7,13 +7,13 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-type ProviderParser struct{}
+type Parser struct{}
 
-func NewProviderParser() ProviderParser {
-	return ProviderParser{}
+func NewParser() Parser {
+	return Parser{}
 }
 
-func (pp ProviderParser) Parse(path string) (Provider, error) {
+func (p Parser) Parse(path string) (Provider, error) {
 	contents, err := ioutil.ReadFile(path)
 	if err != nil {
 		return Provider{}, err

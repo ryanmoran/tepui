@@ -7,12 +7,12 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("ProviderParser", func() {
+var _ = Describe("Parser", func() {
 	Describe("Parse", func() {
-		var parser provider.ProviderParser
+		var parser provider.Parser
 
 		BeforeEach(func() {
-			parser = provider.NewProviderParser()
+			parser = provider.NewParser()
 		})
 
 		Context("for GCP", func() {

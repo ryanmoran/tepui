@@ -23,7 +23,7 @@ func main() {
 	flag.StringVar(&manifestPath, "manifest", "", "path to manifest")
 	flag.Parse()
 
-	prov, err := provider.NewProviderParser().Parse(providerPath)
+	prov, err := provider.NewParser().Parse(providerPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
