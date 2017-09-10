@@ -1,7 +1,7 @@
-package parse_test
+package provider_test
 
 import (
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/provider"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -9,19 +9,19 @@ import (
 
 var _ = Describe("ProviderParser", func() {
 	Describe("Parse", func() {
-		var parser parse.ProviderParser
+		var parser provider.ProviderParser
 
 		BeforeEach(func() {
-			parser = parse.NewProviderParser()
+			parser = provider.NewProviderParser()
 		})
 
 		Context("for GCP", func() {
 			It("parses a provider from a file path", func() {
-				provider, err := parser.Parse("fixtures/providers/gcp.yml")
+				gcp, err := parser.Parse("fixtures/gcp.yml")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(provider).To(Equal(parse.Provider{
+				Expect(gcp).To(Equal(provider.Provider{
 					Type: "gcp",
-					GCP: parse.ProviderGCP{
+					GCP: provider.ProviderGCP{
 						Credentials: "some-credentials",
 						Project:     "some-project",
 						Region:      "some-region",
@@ -32,11 +32,11 @@ var _ = Describe("ProviderParser", func() {
 
 		Context("for AWS", func() {
 			It("parses a provider from a file path", func() {
-				provider, err := parser.Parse("fixtures/providers/aws.yml")
+				aws, err := parser.Parse("fixtures/aws.yml")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(provider).To(Equal(parse.Provider{
+				Expect(aws).To(Equal(provider.Provider{
 					Type: "aws",
-					AWS: parse.ProviderAWS{
+					AWS: provider.ProviderAWS{
 						AccessKey: "some-access-key",
 						SecretKey: "some-secret-key",
 						Region:    "some-region",
@@ -47,11 +47,11 @@ var _ = Describe("ProviderParser", func() {
 
 		Context("for Azure", func() {
 			It("parses a provider from a file path", func() {
-				provider, err := parser.Parse("fixtures/providers/azure.yml")
+				azure, err := parser.Parse("fixtures/azure.yml")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(provider).To(Equal(parse.Provider{
+				Expect(azure).To(Equal(provider.Provider{
 					Type: "azure",
-					Azure: parse.ProviderAzure{
+					Azure: provider.ProviderAzure{
 						SubscriptionID: "some-subscription-id",
 						ClientID:       "some-client-id",
 						ClientSecret:   "some-client-secret",
@@ -72,14 +72,14 @@ var _ = Describe("ProviderParser", func() {
 
 			Context("when the provider cannot be unmarshaled", func() {
 				It("returns an error", func() {
-					_, err := parser.Parse("fixtures/providers/malformed.yml")
+					_, err := parser.Parse("fixtures/malformed.yml")
 					Expect(err).To(MatchError(ContainSubstring("found character that cannot start any token")))
 				})
 			})
 
 			Context("when an unknown provider type is specified", func() {
 				It("returns an error", func() {
-					_, err := parser.Parse("fixtures/providers/unknown.yml")
+					_, err := parser.Parse("fixtures/unknown.yml")
 					Expect(err).To(MatchError(ContainSubstring("unknown provider type: \"banana\"")))
 				})
 			})

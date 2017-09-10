@@ -10,6 +10,7 @@ import (
 	"github.com/pivotal-cf/tepui/generate/azure"
 	"github.com/pivotal-cf/tepui/generate/gcp"
 	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 	flag.StringVar(&manifestPath, "manifest", "", "path to manifest")
 	flag.Parse()
 
-	provider, err := parse.NewProviderParser().Parse(providerPath)
+	prov, err := provider.NewProviderParser().Parse(providerPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -34,7 +35,7 @@ func main() {
 
 	var generator generate.Generator
 
-	switch provider.Type {
+	switch prov.Type {
 	case "gcp":
 		generator = gcp.NewTemplateGenerator()
 	case "aws":
@@ -43,7 +44,7 @@ func main() {
 		generator = azure.NewTemplateGenerator()
 	}
 
-	template, err := generator.Generate(provider, manifest)
+	template, err := generator.Generate(prov, manifest)
 	if err != nil {
 		log.Fatalln(err)
 	}

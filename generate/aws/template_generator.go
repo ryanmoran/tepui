@@ -6,6 +6,7 @@ import (
 	"github.com/pivotal-cf/tepui/generate/aws/resources"
 	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
 type TemplateGenerator struct{}
@@ -14,11 +15,11 @@ func NewTemplateGenerator() TemplateGenerator {
 	return TemplateGenerator{}
 }
 
-func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
+func (g TemplateGenerator) Generate(prov provider.Provider, manifest parse.Manifest) (string, error) {
 	template := NewTemplate(Provider{
-		AccessKey: provider.AWS.AccessKey,
-		SecretKey: provider.AWS.SecretKey,
-		Region:    provider.AWS.Region,
+		AccessKey: prov.AWS.AccessKey,
+		SecretKey: prov.AWS.SecretKey,
+		Region:    prov.AWS.Region,
 	})
 
 	for _, network := range manifest.Networks {

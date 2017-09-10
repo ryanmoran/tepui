@@ -6,6 +6,7 @@ import (
 	"github.com/pivotal-cf/tepui/generate/gcp/resources"
 	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
 type TemplateGenerator struct{}
@@ -14,11 +15,11 @@ func NewTemplateGenerator() TemplateGenerator {
 	return TemplateGenerator{}
 }
 
-func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Manifest) (string, error) {
+func (g TemplateGenerator) Generate(prov provider.Provider, manifest parse.Manifest) (string, error) {
 	template := NewTemplate(Provider{
-		Credentials: provider.GCP.Credentials,
-		Project:     provider.GCP.Project,
-		Region:      provider.GCP.Region,
+		Credentials: prov.GCP.Credentials,
+		Project:     prov.GCP.Project,
+		Region:      prov.GCP.Region,
 	})
 
 	for _, network := range manifest.Networks {

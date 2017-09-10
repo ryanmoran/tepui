@@ -3,6 +3,7 @@ package gcp_test
 import (
 	"github.com/pivotal-cf/tepui/generate/gcp"
 	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/provider"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,9 +12,9 @@ import (
 var _ = Describe("TemplateGenerator", func() {
 	Describe("Generate", func() {
 		It("generates a template from the given manifest", func() {
-			provider := parse.Provider{
+			prov := provider.Provider{
 				Type: "gcp",
-				GCP: parse.ProviderGCP{
+				GCP: provider.ProviderGCP{
 					Credentials: "some-credentials",
 					Project:     "some-project",
 					Region:      "some-region",
@@ -35,7 +36,7 @@ var _ = Describe("TemplateGenerator", func() {
 				},
 			}
 
-			template, err := gcp.NewTemplateGenerator().Generate(provider, manifest)
+			template, err := gcp.NewTemplateGenerator().Generate(prov, manifest)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(template).To(MatchJSON(`{
 				"provider": {
