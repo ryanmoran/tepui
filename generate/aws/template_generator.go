@@ -27,8 +27,8 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 			Resource: resources.AwsVpc{
 				CIDRBlock: network.CIDR,
 				Tags: map[string]string{
-					"name":        network.Name,
-					"environment": manifest.Name,
+					"Name":        network.Name,
+					"Environment": manifest.Name,
 				},
 			},
 		}
@@ -42,8 +42,8 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 					VPCID:     networkResource.Attribute("id"),
 					CIDRBlock: subnet.CIDR,
 					Tags: map[string]string{
-						"name":        subnet.Name,
-						"environment": manifest.Name,
+						"Name":        subnet.Name,
+						"Environment": manifest.Name,
 					},
 				},
 			}

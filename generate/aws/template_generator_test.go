@@ -50,8 +50,8 @@ var _ = Describe("TemplateGenerator", func() {
 						"some-network": {
 							"cidr_block": "1.2.3.4/5",
 							"tags": {
-								"name": "some-network",
-								"environment": "some-environment"
+								"Name": "some-network",
+								"Environment": "some-environment"
 							}
 						}
 					},
@@ -60,8 +60,8 @@ var _ = Describe("TemplateGenerator", func() {
 							"vpc_id": "${aws_vpc.some-network.id}",
 							"cidr_block": "2.3.4.5/6",
 							"tags": {
-								"name": "some-subnet",
-								"environment": "some-environment"
+								"Name": "some-subnet",
+								"Environment": "some-environment"
 							}
 						}
 					}
