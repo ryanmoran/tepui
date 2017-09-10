@@ -20,9 +20,11 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, ComputeNetwork{
-			name: network.Name,
+		template.Resources.ComputeNetworks = append(template.Resources.ComputeNetworks, NamedResource{
 			Name: network.Name,
+			Resource: ComputeNetwork{
+				Name: network.Name,
+			},
 		})
 	}
 

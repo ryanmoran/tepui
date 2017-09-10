@@ -20,11 +20,13 @@ func (g TemplateGenerator) Generate(provider parse.Provider, manifest parse.Mani
 	})
 
 	for _, network := range manifest.Networks {
-		template.Resources.VPCs = append(template.Resources.VPCs, VPC{
-			name:      network.Name,
-			CIDRBlock: network.CIDR,
-			Tags: map[string]string{
-				"name": network.Name,
+		template.Resources.VPCs = append(template.Resources.VPCs, NamedResource{
+			Name: network.Name,
+			Resource: VPC{
+				CIDRBlock: network.CIDR,
+				Tags: map[string]string{
+					"name": network.Name,
+				},
 			},
 		})
 	}

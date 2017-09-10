@@ -2,21 +2,26 @@ package gcp
 
 import "encoding/json"
 
-type ComputeNetworksCollection []ComputeNetwork
+type Resources []NamedResource
 
-func (cnc ComputeNetworksCollection) MarshalJSON() ([]byte, error) {
-	m := map[string]ComputeNetwork{}
+func (r Resources) MarshalJSON() ([]byte, error) {
+	m := map[string]Resource{}
 
-	for _, computeNetwork := range cnc {
-		m[computeNetwork.name] = computeNetwork
+	for _, nr := range r {
+		m[nr.Name] = nr.Resource
 	}
 
 	return json.Marshal(m)
 }
 
-type ComputeNetwork struct {
-	name string
+type NamedResource struct {
+	Name     string
+	Resource Resource
+}
 
+type Resource interface{}
+
+type ComputeNetwork struct {
 	Name string `json:"name"`
 }
 

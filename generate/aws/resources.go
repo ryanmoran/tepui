@@ -2,21 +2,26 @@ package aws
 
 import "encoding/json"
 
-type VPCCollection []VPC
+type Resources []NamedResource
 
-func (vc VPCCollection) MarshalJSON() ([]byte, error) {
-	m := map[string]VPC{}
+func (r Resources) MarshalJSON() ([]byte, error) {
+	m := map[string]Resource{}
 
-	for _, vpc := range vc {
-		m[vpc.name] = vpc
+	for _, nr := range r {
+		m[nr.Name] = nr.Resource
 	}
 
 	return json.Marshal(m)
 }
 
-type VPC struct {
-	name string
+type NamedResource struct {
+	Name     string
+	Resource Resource
+}
 
+type Resource interface{}
+
+type VPC struct {
 	CIDRBlock string            `json:"cidr_block"`
 	Tags      map[string]string `json:"tags"`
 }

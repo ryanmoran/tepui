@@ -3,8 +3,8 @@ package azure
 type Template struct {
 	Provider  Provider `json:"provider"`
 	Resources struct {
-		ResourceGroups  ResourceGroupCollection  `json:"azurerm_resource_group"`
-		VirtualNetworks VirtualNetworkCollection `json:"azurerm_virtual_network"`
+		ResourceGroups  Resources `json:"azurerm_resource_group"`
+		VirtualNetworks Resources `json:"azurerm_virtual_network"`
 	} `json:"resource"`
 }
 
