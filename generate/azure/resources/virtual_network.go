@@ -6,7 +6,3 @@ type VirtualNetwork struct {
 	AddressSpace      []string `json:"address_space"`
 	Location          string   `json:"location"`
 }
-
-func (vn VirtualNetwork) ResourceType() string {
-	return "azurerm_virtual_network"
-}
