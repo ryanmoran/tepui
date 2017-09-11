@@ -5,7 +5,7 @@ import (
 
 	"github.com/pivotal-cf/tepui/generate/azure/resources"
 	"github.com/pivotal-cf/tepui/generate/internal/terraform"
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
@@ -15,32 +15,32 @@ func NewTemplateGenerator() TemplateGenerator {
 	return TemplateGenerator{}
 }
 
-func (g TemplateGenerator) Generate(prov provider.Provider, manifest parse.Manifest) (string, error) {
+func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (string, error) {
 	template := NewTemplate(Provider{
-		SubscriptionID: prov.Azure.SubscriptionID,
-		ClientID:       prov.Azure.ClientID,
-		ClientSecret:   prov.Azure.ClientSecret,
-		TenantID:       prov.Azure.TenantID,
+		SubscriptionID: p.Azure.SubscriptionID,
+		ClientID:       p.Azure.ClientID,
+		ClientSecret:   p.Azure.ClientSecret,
+		TenantID:       p.Azure.TenantID,
 	})
 
 	resourceGroup := terraform.NamedResource{
 		Name: "resource_group",
 		Resource: resources.AzurermResourceGroup{
-			Name:     manifest.Name,
-			Location: prov.Azure.Region,
+			Name:     m.Name,
+			Location: p.Azure.Region,
 		},
 	}
 
 	template.Resources = append(template.Resources, resourceGroup)
 
-	for _, network := range manifest.Networks {
+	for _, network := range m.Networks {
 		networkResource := terraform.NamedResource{
 			Name: network.Name,
 			Resource: resources.AzurermVirtualNetwork{
 				Name:              network.Name,
 				ResourceGroupName: resourceGroup.Attribute("name"),
 				AddressSpace:      []string{network.CIDR},
-				Location:          prov.Azure.Region,
+				Location:          p.Azure.Region,
 			},
 		}
 

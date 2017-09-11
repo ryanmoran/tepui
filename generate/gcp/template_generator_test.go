@@ -2,7 +2,7 @@ package gcp_test
 
 import (
 	"github.com/pivotal-cf/tepui/generate/gcp"
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 
 	. "github.com/onsi/ginkgo"
@@ -20,13 +20,13 @@ var _ = Describe("TemplateGenerator", func() {
 					Region:      "some-region",
 				},
 			}
-			manifest := parse.Manifest{
+			manifest := manifest.Manifest{
 				Name: "some-environment",
-				Networks: []parse.ManifestNetwork{
+				Networks: []manifest.ManifestNetwork{
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
-						Subnets: []parse.ManifestSubnet{
+						Subnets: []manifest.ManifestSubnet{
 							{
 								Name: "some-subnet",
 								CIDR: "2.3.4.5/6",

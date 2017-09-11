@@ -1,4 +1,4 @@
-package parse
+package manifest
 
 type ManifestNetwork struct {
 	Name    string           `yaml:"name"`

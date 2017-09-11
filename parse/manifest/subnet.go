@@ -1,4 +1,4 @@
-package parse
+package manifest
 
 type ManifestSubnet struct {
 	Name string `yaml:"name"`

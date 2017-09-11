@@ -9,7 +9,7 @@ import (
 	"github.com/pivotal-cf/tepui/generate/aws"
 	"github.com/pivotal-cf/tepui/generate/azure"
 	"github.com/pivotal-cf/tepui/generate/gcp"
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
@@ -28,7 +28,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	manifest, err := parse.NewManifestParser().Parse(manifestPath)
+	manifest, err := manifest.NewManifestParser().Parse(manifestPath)
 	if err != nil {
 		log.Fatalln(err)
 	}

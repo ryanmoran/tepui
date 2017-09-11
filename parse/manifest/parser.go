@@ -1,4 +1,4 @@
-package parse
+package manifest
 
 import (
 	"io/ioutil"

@@ -1,7 +1,7 @@
-package parse_test
+package manifest_test
 
 import (
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/manifest"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -9,22 +9,22 @@ import (
 
 var _ = Describe("ManifestParser", func() {
 	Describe("Parse", func() {
-		var parser parse.ManifestParser
+		var parser manifest.ManifestParser
 
 		BeforeEach(func() {
-			parser = parse.NewManifestParser()
+			parser = manifest.NewManifestParser()
 		})
 
 		It("parses a manifest from a file path", func() {
-			manifest, err := parser.Parse("fixtures/manifest.yml")
+			m, err := parser.Parse("fixtures/manifest.yml")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(manifest).To(Equal(parse.Manifest{
+			Expect(m).To(Equal(manifest.Manifest{
 				Name: "some-environment",
-				Networks: []parse.ManifestNetwork{
+				Networks: []manifest.ManifestNetwork{
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
-						Subnets: []parse.ManifestSubnet{
+						Subnets: []manifest.ManifestSubnet{
 							{
 								Name: "some-subnet",
 								CIDR: "2.3.4.5/6",

@@ -1,10 +1,10 @@
 package generate
 
 import (
-	"github.com/pivotal-cf/tepui/parse"
+	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
 type Generator interface {
-	Generate(provider.Provider, parse.Manifest) (template string, err error)
+	Generate(provider.Provider, manifest.Manifest) (template string, err error)
 }
