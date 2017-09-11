@@ -2,24 +2,24 @@ package provider
 
 type Provider struct {
 	Type  string
-	GCP   ProviderGCP
-	AWS   ProviderAWS
-	Azure ProviderAzure
+	GCP   GCP
+	AWS   AWS
+	Azure Azure
 }
 
-type ProviderGCP struct {
+type GCP struct {
 	Credentials string
 	Project     string
 	Region      string
 }
 
-type ProviderAWS struct {
+type AWS struct {
 	AccessKey string
 	SecretKey string
 	Region    string
 }
 
-type ProviderAzure struct {
+type Azure struct {
 	SubscriptionID string
 	ClientID       string
 	ClientSecret   string

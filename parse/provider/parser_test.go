@@ -21,7 +21,7 @@ var _ = Describe("Parser", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(gcp).To(Equal(provider.Provider{
 					Type: "gcp",
-					GCP: provider.ProviderGCP{
+					GCP: provider.GCP{
 						Credentials: "some-credentials",
 						Project:     "some-project",
 						Region:      "some-region",
@@ -36,7 +36,7 @@ var _ = Describe("Parser", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(aws).To(Equal(provider.Provider{
 					Type: "aws",
-					AWS: provider.ProviderAWS{
+					AWS: provider.AWS{
 						AccessKey: "some-access-key",
 						SecretKey: "some-secret-key",
 						Region:    "some-region",
@@ -51,7 +51,7 @@ var _ = Describe("Parser", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(azure).To(Equal(provider.Provider{
 					Type: "azure",
-					Azure: provider.ProviderAzure{
+					Azure: provider.Azure{
 						SubscriptionID: "some-subscription-id",
 						ClientID:       "some-client-id",
 						ClientSecret:   "some-client-secret",

@@ -14,7 +14,7 @@ var _ = Describe("TemplateGenerator", func() {
 		It("generates a template from the given manifest", func() {
 			prov := provider.Provider{
 				Type: "azure",
-				Azure: provider.ProviderAzure{
+				Azure: provider.Azure{
 					SubscriptionID: "some-subscription-id",
 					ClientID:       "some-client-id",
 					ClientSecret:   "some-client-secret",

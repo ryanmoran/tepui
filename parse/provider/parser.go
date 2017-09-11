@@ -33,7 +33,7 @@ func (p Parser) Parse(path string) (Provider, error) {
 	case "gcp":
 		return Provider{
 			Type: provider.Type,
-			GCP: ProviderGCP{
+			GCP: GCP{
 				Credentials: provider.Params["credentials"],
 				Project:     provider.Params["project"],
 				Region:      provider.Params["region"],
@@ -42,7 +42,7 @@ func (p Parser) Parse(path string) (Provider, error) {
 	case "aws":
 		return Provider{
 			Type: provider.Type,
-			AWS: ProviderAWS{
+			AWS: AWS{
 				AccessKey: provider.Params["access_key"],
 				SecretKey: provider.Params["secret_key"],
 				Region:    provider.Params["region"],
@@ -51,7 +51,7 @@ func (p Parser) Parse(path string) (Provider, error) {
 	case "azure":
 		return Provider{
 			Type: provider.Type,
-			Azure: ProviderAzure{
+			Azure: Azure{
 				SubscriptionID: provider.Params["subscription_id"],
 				ClientID:       provider.Params["client_id"],
 				ClientSecret:   provider.Params["client_secret"],

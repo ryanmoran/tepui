@@ -14,7 +14,7 @@ var _ = Describe("TemplateGenerator", func() {
 		It("generates a template from the given manifest", func() {
 			prov := provider.Provider{
 				Type: "aws",
-				AWS: provider.ProviderAWS{
+				AWS: provider.AWS{
 					AccessKey: "some-access-key",
 					SecretKey: "some-secret-key",
 					Region:    "some-region",

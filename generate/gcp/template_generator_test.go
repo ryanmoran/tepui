@@ -14,7 +14,7 @@ var _ = Describe("TemplateGenerator", func() {
 		It("generates a template from the given manifest", func() {
 			prov := provider.Provider{
 				Type: "gcp",
-				GCP: provider.ProviderGCP{
+				GCP: provider.GCP{
 					Credentials: "some-credentials",
 					Project:     "some-project",
 					Region:      "some-region",
