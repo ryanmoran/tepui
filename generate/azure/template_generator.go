@@ -9,10 +9,14 @@ import (
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
-type TemplateGenerator struct{}
+type TemplateGenerator struct {
+	networks NetworkResourceGenerator
+}
 
-func NewTemplateGenerator() TemplateGenerator {
-	return TemplateGenerator{}
+func NewTemplateGenerator(networks NetworkResourceGenerator) TemplateGenerator {
+	return TemplateGenerator{
+		networks: networks,
+	}
 }
 
 func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (string, error) {
@@ -34,31 +38,8 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	template.Resources = append(template.Resources, resourceGroup)
 
 	for _, network := range m.Networks {
-		networkResource := terraform.NamedResource{
-			Name: network.Name,
-			Resource: resources.AzurermVirtualNetwork{
-				Name:              network.Name,
-				ResourceGroupName: resourceGroup.Attribute("name"),
-				AddressSpace:      []string{network.CIDR},
-				Location:          p.Azure.Region,
-			},
-		}
-
-		template.Resources = append(template.Resources, networkResource)
-
-		for _, subnet := range network.Subnets {
-			subnetResource := terraform.NamedResource{
-				Name: subnet.Name,
-				Resource: resources.AzurermSubnet{
-					Name:               subnet.Name,
-					ResourceGroupName:  resourceGroup.Attribute("name"),
-					VirtualNetworkName: networkResource.Attribute("name"),
-					AddressPrefix:      subnet.CIDR,
-				},
-			}
-
-			template.Resources = append(template.Resources, subnetResource)
-		}
+		networkResources := g.networks.Generate(resourceGroup, p.Azure.Region, network)
+		template.Resources = append(template.Resources, networkResources...)
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

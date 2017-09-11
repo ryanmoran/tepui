@@ -3,16 +3,18 @@ package aws
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/generate/aws/resources"
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
-type TemplateGenerator struct{}
+type TemplateGenerator struct {
+	networks NetworkResourceGenerator
+}
 
-func NewTemplateGenerator() TemplateGenerator {
-	return TemplateGenerator{}
+func NewTemplateGenerator(networks NetworkResourceGenerator) TemplateGenerator {
+	return TemplateGenerator{
+		networks: networks,
+	}
 }
 
 func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (string, error) {
@@ -23,34 +25,7 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	})
 
 	for _, network := range m.Networks {
-		networkResource := terraform.NamedResource{
-			Name: network.Name,
-			Resource: resources.AwsVpc{
-				CIDRBlock: network.CIDR,
-				Tags: map[string]string{
-					"Name":        network.Name,
-					"Environment": m.Name,
-				},
-			},
-		}
-
-		template.Resources = append(template.Resources, networkResource)
-
-		for _, subnet := range network.Subnets {
-			subnetResource := terraform.NamedResource{
-				Name: subnet.Name,
-				Resource: resources.AwsSubnet{
-					VPCID:     networkResource.Attribute("id"),
-					CIDRBlock: subnet.CIDR,
-					Tags: map[string]string{
-						"Name":        subnet.Name,
-						"Environment": m.Name,
-					},
-				},
-			}
-
-			template.Resources = append(template.Resources, subnetResource)
-		}
+		template.Resources = append(template.Resources, g.networks.Generate(m.Name, network)...)
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

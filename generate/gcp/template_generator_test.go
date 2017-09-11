@@ -36,7 +36,8 @@ var _ = Describe("TemplateGenerator", func() {
 				},
 			}
 
-			template, err := gcp.NewTemplateGenerator().Generate(prov, manifest)
+			generator := gcp.NewTemplateGenerator(gcp.NewNetworkResourceGenerator())
+			template, err := generator.Generate(prov, manifest)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(template).To(MatchJSON(`{
 				"provider": {

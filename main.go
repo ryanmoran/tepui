@@ -33,18 +33,21 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	var generator generate.Generator
+	var templateGenerator generate.Generator
 
 	switch prov.Type {
-	case "gcp":
-		generator = gcp.NewTemplateGenerator()
 	case "aws":
-		generator = aws.NewTemplateGenerator()
+		networksGenerator := aws.NewNetworkResourceGenerator()
+		templateGenerator = aws.NewTemplateGenerator(networksGenerator)
 	case "azure":
-		generator = azure.NewTemplateGenerator()
+		networksGenerator := azure.NewNetworkResourceGenerator()
+		templateGenerator = azure.NewTemplateGenerator(networksGenerator)
+	case "gcp":
+		networksGenerator := gcp.NewNetworkResourceGenerator()
+		templateGenerator = gcp.NewTemplateGenerator(networksGenerator)
 	}
 
-	template, err := generator.Generate(prov, manifest)
+	template, err := templateGenerator.Generate(prov, manifest)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -3,16 +3,18 @@ package gcp
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/generate/gcp/resources"
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 	"github.com/pivotal-cf/tepui/parse/manifest"
 	"github.com/pivotal-cf/tepui/parse/provider"
 )
 
-type TemplateGenerator struct{}
+type TemplateGenerator struct {
+	networks NetworkResourceGenerator
+}
 
-func NewTemplateGenerator() TemplateGenerator {
-	return TemplateGenerator{}
+func NewTemplateGenerator(networks NetworkResourceGenerator) TemplateGenerator {
+	return TemplateGenerator{
+		networks: networks,
+	}
 }
 
 func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (string, error) {
@@ -23,27 +25,8 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	})
 
 	for _, network := range m.Networks {
-		networkResource := terraform.NamedResource{
-			Name: network.Name,
-			Resource: resources.GoogleComputeNetwork{
-				Name: network.Name,
-			},
-		}
-
-		template.Resources = append(template.Resources, networkResource)
-
-		for _, subnet := range network.Subnets {
-			subnetResource := terraform.NamedResource{
-				Name: subnet.Name,
-				Resource: resources.GoogleComputeSubnetwork{
-					Name:        subnet.Name,
-					IPCIDRRange: subnet.CIDR,
-					Network:     networkResource.SelfLink(),
-				},
-			}
-
-			template.Resources = append(template.Resources, subnetResource)
-		}
+		networkResources := g.networks.Generate(network)
+		template.Resources = append(template.Resources, networkResources...)
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

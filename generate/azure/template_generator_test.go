@@ -38,7 +38,7 @@ var _ = Describe("TemplateGenerator", func() {
 				},
 			}
 
-			generator := azure.NewTemplateGenerator()
+			generator := azure.NewTemplateGenerator(azure.NewNetworkResourceGenerator())
 			template, err := generator.Generate(prov, manifest)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(template).To(MatchJSON(`{
