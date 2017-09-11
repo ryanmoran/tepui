@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/pivotal-cf/tepui/generate"
 	"github.com/pivotal-cf/tepui/generate/aws"
 	"github.com/pivotal-cf/tepui/generate/azure"
 	"github.com/pivotal-cf/tepui/generate/gcp"
@@ -23,31 +22,37 @@ func main() {
 	flag.StringVar(&manifestPath, "manifest", "", "path to manifest")
 	flag.Parse()
 
-	prov, err := provider.NewParser().Parse(providerPath)
+	p, err := provider.NewParser().Parse(providerPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	manifest, err := manifest.NewParser().Parse(manifestPath)
+	m, err := manifest.NewParser().Parse(manifestPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	var templateGenerator generate.Generator
+	var templateGenerator interface {
+		Generate(provider.Provider, manifest.Manifest) (string, error)
+	}
 
-	switch prov.Type {
+	switch p.Type {
+
 	case "aws":
 		networksGenerator := aws.NewNetworkResourceGenerator()
 		templateGenerator = aws.NewTemplateGenerator(networksGenerator)
+
 	case "azure":
 		networksGenerator := azure.NewNetworkResourceGenerator()
 		templateGenerator = azure.NewTemplateGenerator(networksGenerator)
+
 	case "gcp":
 		networksGenerator := gcp.NewNetworkResourceGenerator()
 		templateGenerator = gcp.NewTemplateGenerator(networksGenerator)
+
 	}
 
-	template, err := templateGenerator.Generate(prov, manifest)
+	template, err := templateGenerator.Generate(p, m)
 	if err != nil {
 		log.Fatalln(err)
 	}
