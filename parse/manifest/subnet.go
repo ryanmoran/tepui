@@ -1,6 +1,6 @@
 package manifest
 
-type ManifestSubnet struct {
+type Subnet struct {
 	Name string `yaml:"name"`
 	CIDR string `yaml:"cidr"`
 }

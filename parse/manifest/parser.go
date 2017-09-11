@@ -6,13 +6,13 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-type ManifestParser struct{}
+type Parser struct{}
 
-func NewManifestParser() ManifestParser {
-	return ManifestParser{}
+func NewParser() Parser {
+	return Parser{}
 }
 
-func (p ManifestParser) Parse(path string) (Manifest, error) {
+func (p Parser) Parse(path string) (Manifest, error) {
 	var manifest Manifest
 
 	contents, err := ioutil.ReadFile(path)

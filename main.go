@@ -28,7 +28,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	manifest, err := manifest.NewManifestParser().Parse(manifestPath)
+	manifest, err := manifest.NewParser().Parse(manifestPath)
 	if err != nil {
 		log.Fatalln(err)
 	}

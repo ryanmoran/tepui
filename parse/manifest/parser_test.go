@@ -7,12 +7,12 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("ManifestParser", func() {
+var _ = Describe("Parser", func() {
 	Describe("Parse", func() {
-		var parser manifest.ManifestParser
+		var parser manifest.Parser
 
 		BeforeEach(func() {
-			parser = manifest.NewManifestParser()
+			parser = manifest.NewParser()
 		})
 
 		It("parses a manifest from a file path", func() {
@@ -20,11 +20,11 @@ var _ = Describe("ManifestParser", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(m).To(Equal(manifest.Manifest{
 				Name: "some-environment",
-				Networks: []manifest.ManifestNetwork{
+				Networks: []manifest.Network{
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
-						Subnets: []manifest.ManifestSubnet{
+						Subnets: []manifest.Subnet{
 							{
 								Name: "some-subnet",
 								CIDR: "2.3.4.5/6",

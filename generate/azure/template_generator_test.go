@@ -24,11 +24,11 @@ var _ = Describe("TemplateGenerator", func() {
 			}
 			manifest := manifest.Manifest{
 				Name: "some-environment",
-				Networks: []manifest.ManifestNetwork{
+				Networks: []manifest.Network{
 					{
 						Name: "some-network",
 						CIDR: "1.2.3.4/5",
-						Subnets: []manifest.ManifestSubnet{
+						Subnets: []manifest.Subnet{
 							{
 								Name: "some-subnet",
 								CIDR: "2.3.4.5/6",
