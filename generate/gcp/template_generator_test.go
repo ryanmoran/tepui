@@ -1,9 +1,9 @@
 package gcp_test
 
 import (
-	"github.com/pivotal-cf/tepui/generate/gcp"
-	"github.com/pivotal-cf/tepui/parse/manifest"
-	"github.com/pivotal-cf/tepui/parse/provider"
+	"github.com/ryanmoran/tepui/generate/gcp"
+	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

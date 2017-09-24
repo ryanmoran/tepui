@@ -1,6 +1,6 @@
 package gcp
 
-import "github.com/pivotal-cf/tepui/generate/internal/terraform"
+import "github.com/ryanmoran/tepui/generate/internal/terraform"
 
 type Template struct {
 	Provider  Provider            `json:"provider"`

@@ -1,9 +1,10 @@
 package terraform_test
 
 import (
+	"github.com/ryanmoran/tepui/generate/internal/terraform"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
 )
 
 type SomeCloudResource struct{}

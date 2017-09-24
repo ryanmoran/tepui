@@ -18,7 +18,7 @@ var pathToMain string
 
 var _ = BeforeSuite(func() {
 	var err error
-	pathToMain, err = gexec.Build("github.com/pivotal-cf/tepui")
+	pathToMain, err = gexec.Build("github.com/ryanmoran/tepui")
 	Expect(err).NotTo(HaveOccurred())
 })
 

@@ -1,9 +1,9 @@
 package gcp
 
 import (
-	"github.com/pivotal-cf/tepui/generate/gcp/resources"
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
-	"github.com/pivotal-cf/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/generate/gcp/resources"
+	"github.com/ryanmoran/tepui/generate/internal/terraform"
+	"github.com/ryanmoran/tepui/parse/manifest"
 )
 
 type NetworkResourceGenerator struct{}

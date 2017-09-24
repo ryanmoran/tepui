@@ -1,7 +1,7 @@
 package manifest_test
 
 import (
-	"github.com/pivotal-cf/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/manifest"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

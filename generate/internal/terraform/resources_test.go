@@ -1,7 +1,7 @@
 package terraform_test
 
 import (
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
+	"github.com/ryanmoran/tepui/generate/internal/terraform"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

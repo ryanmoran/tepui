@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/pivotal-cf/tepui/generate/aws"
-	"github.com/pivotal-cf/tepui/generate/azure"
-	"github.com/pivotal-cf/tepui/generate/gcp"
-	"github.com/pivotal-cf/tepui/parse/manifest"
-	"github.com/pivotal-cf/tepui/parse/provider"
+	"github.com/ryanmoran/tepui/generate/aws"
+	"github.com/ryanmoran/tepui/generate/azure"
+	"github.com/ryanmoran/tepui/generate/gcp"
+	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 )
 
 func main() {

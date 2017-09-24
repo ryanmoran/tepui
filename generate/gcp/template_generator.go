@@ -3,8 +3,8 @@ package gcp
 import (
 	"encoding/json"
 
-	"github.com/pivotal-cf/tepui/parse/manifest"
-	"github.com/pivotal-cf/tepui/parse/provider"
+	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 )
 
 type TemplateGenerator struct {

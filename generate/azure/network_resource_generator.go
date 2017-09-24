@@ -1,9 +1,9 @@
 package azure
 
 import (
-	"github.com/pivotal-cf/tepui/generate/azure/resources"
-	"github.com/pivotal-cf/tepui/generate/internal/terraform"
-	"github.com/pivotal-cf/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/generate/azure/resources"
+	"github.com/ryanmoran/tepui/generate/internal/terraform"
+	"github.com/ryanmoran/tepui/parse/manifest"
 )
 
 type NetworkResourceGenerator struct{}
