@@ -27,16 +27,6 @@ func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalanc
 		},
 	}
 
-	zone, _ := zones.Find(loadBalancer.Zones[0])
-
-	instanceGroup := terraform.NamedResource{
-		Name: strings.Join([]string{loadBalancer.Name, loadBalancer.Zones[0]}, "-"),
-		Resource: resources.GoogleComputeInstanceGroup{
-			Name: strings.Join([]string{loadBalancer.Name, loadBalancer.Zones[0]}, "-"),
-			Zone: zone,
-		},
-	}
-
 	healthCheck := terraform.NamedResource{
 		Name: loadBalancer.Name,
 		Resource: resources.GoogleComputeHealthCheck{
@@ -45,15 +35,35 @@ func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalanc
 		},
 	}
 
+	var instanceGroups []terraform.NamedResource
+	for _, z := range loadBalancer.Zones {
+		zone, _ := zones.Find(z)
+
+		instanceGroup := terraform.NamedResource{
+			Name: strings.Join([]string{loadBalancer.Name, z}, "-"),
+			Resource: resources.GoogleComputeInstanceGroup{
+				Name: strings.Join([]string{loadBalancer.Name, z}, "-"),
+				Zone: zone,
+			},
+		}
+
+		instanceGroups = append(instanceGroups, instanceGroup)
+		r = append(r, instanceGroup)
+	}
+
+	var backends []resources.GoogleComputeBackendServiceBackend
+	for _, instanceGroup := range instanceGroups {
+		backend := resources.GoogleComputeBackendServiceBackend{
+			Group: instanceGroup.SelfLink(),
+		}
+		backends = append(backends, backend)
+	}
+
 	backendService := terraform.NamedResource{
 		Name: loadBalancer.Name,
 		Resource: resources.GoogleComputeBackendService{
-			Name: loadBalancer.Name,
-			Backend: []resources.GoogleComputeBackendServiceBackend{
-				{
-					Group: instanceGroup.SelfLink(),
-				},
-			},
+			Name:    loadBalancer.Name,
+			Backend: backends,
 			HealthChecks: []string{
 				healthCheck.SelfLink(),
 			},
@@ -90,7 +100,7 @@ func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalanc
 		r = append(r, forwardingRule)
 	}
 
-	r = append(r, globalAddress, targetHTTPProxy, urlMap, backendService, healthCheck, instanceGroup)
+	r = append(r, globalAddress, targetHTTPProxy, urlMap, backendService, healthCheck)
 
 	return r
 }

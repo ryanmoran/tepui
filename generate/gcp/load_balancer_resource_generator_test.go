@@ -19,13 +19,17 @@ var _ = Describe("LoadBalancerResourceGenerator", func() {
 			loadBalancer := manifest.LoadBalancer{
 				Name:  "some-lb",
 				Ports: []int{1234, 5678},
-				Zones: []string{"az-1"},
+				Zones: []string{"az-1", "az-2"},
 			}
 
 			zones := []provider.Zone{
 				{
 					Alias: "az-1",
-					Name:  "some-zone",
+					Name:  "some-zone-1",
+				},
+				{
+					Alias: "az-2",
+					Name:  "some-zone-2",
 				},
 			}
 
@@ -76,6 +80,9 @@ var _ = Describe("LoadBalancerResourceGenerator", func() {
 							{
 								Group: "${google_compute_instance_group.some-lb-az-1.self_link}",
 							},
+							{
+								Group: "${google_compute_instance_group.some-lb-az-2.self_link}",
+							},
 						},
 						HealthChecks: []string{
 							"${google_compute_health_check.some-lb.self_link}",
@@ -86,7 +93,14 @@ var _ = Describe("LoadBalancerResourceGenerator", func() {
 					Name: "some-lb-az-1",
 					Resource: resources.GoogleComputeInstanceGroup{
 						Name: "some-lb-az-1",
-						Zone: "some-zone",
+						Zone: "some-zone-1",
+					},
+				},
+				{
+					Name: "some-lb-az-2",
+					Resource: resources.GoogleComputeInstanceGroup{
+						Name: "some-lb-az-2",
+						Zone: "some-zone-2",
 					},
 				},
 				{

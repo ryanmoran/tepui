@@ -7,3 +7,5 @@ params:
   zones:
   - alias: az-1
     name: us-central1-a
+  - alias: az-2
+    name: us-central1-b

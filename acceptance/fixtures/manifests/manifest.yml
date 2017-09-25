@@ -24,6 +24,7 @@ load_balancers:
   - 8080
   zones:
   - az-1
+  - az-2
 - name: some-lb-2
   ports:
   - 1234
