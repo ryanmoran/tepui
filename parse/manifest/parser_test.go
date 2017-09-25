@@ -32,6 +32,13 @@ var _ = Describe("Parser", func() {
 						},
 					},
 				},
+				LoadBalancers: []manifest.LoadBalancer{
+					{
+						Name:  "some-lb",
+						Ports: []int{1234},
+						Zones: []string{"some-zone"},
+					},
+				},
 			}))
 		})
 

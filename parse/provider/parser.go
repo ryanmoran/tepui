@@ -21,7 +21,21 @@ func (p Parser) Parse(path string) (Provider, error) {
 
 	var provider struct {
 		Type   string `yaml:"type"`
-		Params map[string]string
+		Params struct {
+			Credentials string `yaml:"credentials"`
+			Project     string `yaml:"project"`
+
+			AccessKey string `yaml:"access_key"`
+			SecretKey string `yaml:"secret_key"`
+
+			SubscriptionID string `yaml:"subscription_id"`
+			ClientID       string `yaml:"client_id"`
+			ClientSecret   string `yaml:"client_secret"`
+			TenantID       string `yaml:"tenant_id"`
+
+			Region string `yaml:"region"`
+			Zones  []Zone `yaml:"zones"`
+		}
 	}
 
 	err = yaml.Unmarshal(contents, &provider)
@@ -34,29 +48,30 @@ func (p Parser) Parse(path string) (Provider, error) {
 		return Provider{
 			Type: provider.Type,
 			GCP: GCP{
-				Credentials: provider.Params["credentials"],
-				Project:     provider.Params["project"],
-				Region:      provider.Params["region"],
+				Credentials: provider.Params.Credentials,
+				Project:     provider.Params.Project,
+				Region:      provider.Params.Region,
+				Zones:       provider.Params.Zones,
 			},
 		}, nil
 	case "aws":
 		return Provider{
 			Type: provider.Type,
 			AWS: AWS{
-				AccessKey: provider.Params["access_key"],
-				SecretKey: provider.Params["secret_key"],
-				Region:    provider.Params["region"],
+				AccessKey: provider.Params.AccessKey,
+				SecretKey: provider.Params.SecretKey,
+				Region:    provider.Params.Region,
 			},
 		}, nil
 	case "azure":
 		return Provider{
 			Type: provider.Type,
 			Azure: Azure{
-				SubscriptionID: provider.Params["subscription_id"],
-				ClientID:       provider.Params["client_id"],
-				ClientSecret:   provider.Params["client_secret"],
-				TenantID:       provider.Params["tenant_id"],
-				Region:         provider.Params["region"],
+				SubscriptionID: provider.Params.SubscriptionID,
+				ClientID:       provider.Params.ClientID,
+				ClientSecret:   provider.Params.ClientSecret,
+				TenantID:       provider.Params.TenantID,
+				Region:         provider.Params.Region,
 			},
 		}, nil
 	default:

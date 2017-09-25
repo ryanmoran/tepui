@@ -4,3 +4,6 @@ params:
   credentials: some-credentials
   project: some-project
   region: some-region
+  zones:
+  - alias: az-1
+    name: us-central1-a

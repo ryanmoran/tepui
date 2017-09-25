@@ -7,6 +7,74 @@
     }
   },
   "resource": {
+    "google_compute_backend_service": {
+      "some-lb-1": {
+        "backend": [{
+          "group": "${google_compute_instance_group.some-lb-1-az-1.self_link}"
+        }],
+        "health_checks": [
+          "${google_compute_health_check.some-lb-1.self_link}"
+        ],
+        "name": "some-lb-1"
+      },
+      "some-lb-2": {
+        "backend": [{
+          "group": "${google_compute_instance_group.some-lb-2-az-1.self_link}"
+        }],
+        "health_checks": [
+          "${google_compute_health_check.some-lb-2.self_link}"
+        ],
+        "name": "some-lb-2"
+      }
+    },
+    "google_compute_global_address": {
+      "some-lb-1": {
+        "name": "some-lb-1"
+      },
+      "some-lb-2": {
+        "name": "some-lb-2"
+      }
+    },
+    "google_compute_global_forwarding_rule": {
+      "some-lb-1-80": {
+        "ip_address": "${google_compute_global_address.some-lb-1.address}",
+        "name": "some-lb-1-80",
+        "port_range": "80",
+        "target": "${google_compute_target_http_proxy.some-lb-1.self_link}"
+      },
+      "some-lb-1-8080": {
+        "ip_address": "${google_compute_global_address.some-lb-1.address}",
+        "name": "some-lb-1-8080",
+        "port_range": "8080",
+        "target": "${google_compute_target_http_proxy.some-lb-1.self_link}"
+      },
+      "some-lb-2-1234": {
+        "ip_address": "${google_compute_global_address.some-lb-2.address}",
+        "name": "some-lb-2-1234",
+        "port_range": "1234",
+        "target": "${google_compute_target_http_proxy.some-lb-2.self_link}"
+      }
+    },
+    "google_compute_health_check": {
+      "some-lb-1": {
+        "name": "some-lb-1",
+        "tcp_health_check": {}
+      },
+      "some-lb-2": {
+        "name": "some-lb-2",
+        "tcp_health_check": {}
+      }
+    },
+    "google_compute_instance_group": {
+      "some-lb-1-az-1": {
+        "name": "some-lb-1-az-1",
+        "zone": "us-central1-a"
+      },
+      "some-lb-2-az-1": {
+        "name": "some-lb-2-az-1",
+        "zone": "us-central1-a"
+      }
+    },
     "google_compute_network": {
       "some-network-1": {
         "name": "some-network-1"
@@ -17,24 +85,44 @@
     },
     "google_compute_subnetwork": {
       "some-subnet-1": {
-        "name": "some-subnet-1",
         "ip_cidr_range": "2.3.4.5/6",
+        "name": "some-subnet-1",
         "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-subnet-2": {
-        "name": "some-subnet-2",
         "ip_cidr_range": "3.4.5.6/7",
+        "name": "some-subnet-2",
         "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-subnet-3": {
-        "name": "some-subnet-3",
         "ip_cidr_range": "7.8.9.10/11",
+        "name": "some-subnet-3",
         "network": "${google_compute_network.some-network-2.self_link}"
       },
       "some-subnet-4": {
-        "name": "some-subnet-4",
         "ip_cidr_range": "8.9.10.11/12",
+        "name": "some-subnet-4",
         "network": "${google_compute_network.some-network-2.self_link}"
+      }
+    },
+    "google_compute_target_http_proxy": {
+      "some-lb-1": {
+        "name": "some-lb-1",
+        "url_map": "${google_compute_url_map.some-lb-1.self_link}"
+      },
+      "some-lb-2": {
+        "name": "some-lb-2",
+        "url_map": "${google_compute_url_map.some-lb-2.self_link}"
+      }
+    },
+    "google_compute_url_map": {
+      "some-lb-1": {
+        "default_service": "${google_compute_backend_service.some-lb-1.self_link}",
+        "name": "some-lb-1"
+      },
+      "some-lb-2": {
+        "default_service": "${google_compute_backend_service.some-lb-2.self_link}",
+        "name": "some-lb-2"
       }
     }
   }

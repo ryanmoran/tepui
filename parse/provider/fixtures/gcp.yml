@@ -4,3 +4,6 @@ params:
   credentials: some-credentials
   project: some-project
   region: some-region
+  zones:
+  - alias: zone-1
+    name: name-1

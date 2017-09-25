@@ -8,12 +8,14 @@ import (
 )
 
 type TemplateGenerator struct {
-	networks NetworkResourceGenerator
+	networks      NetworkResourceGenerator
+	loadBalancers LoadBalancerResourceGenerator
 }
 
-func NewTemplateGenerator(networks NetworkResourceGenerator) TemplateGenerator {
+func NewTemplateGenerator(networks NetworkResourceGenerator, loadBalancers LoadBalancerResourceGenerator) TemplateGenerator {
 	return TemplateGenerator{
-		networks: networks,
+		networks:      networks,
+		loadBalancers: loadBalancers,
 	}
 }
 
@@ -27,6 +29,11 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	for _, network := range m.Networks {
 		networkResources := g.networks.Generate(network)
 		template.Resources = append(template.Resources, networkResources...)
+	}
+
+	for _, loadBalancer := range m.LoadBalancers {
+		loadBalancerResources := g.loadBalancers.Generate(loadBalancer, p.GCP.Zones)
+		template.Resources = append(template.Resources, loadBalancerResources...)
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

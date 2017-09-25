@@ -48,7 +48,8 @@ func main() {
 
 	case "gcp":
 		networksGenerator := gcp.NewNetworkResourceGenerator()
-		templateGenerator = gcp.NewTemplateGenerator(networksGenerator)
+		loadBalancerGenerator := gcp.NewLoadBalancerResourceGenerator()
+		templateGenerator = gcp.NewTemplateGenerator(networksGenerator, loadBalancerGenerator)
 
 	}
 

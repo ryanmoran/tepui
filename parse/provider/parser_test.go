@@ -25,6 +25,12 @@ var _ = Describe("Parser", func() {
 						Credentials: "some-credentials",
 						Project:     "some-project",
 						Region:      "some-region",
+						Zones: []provider.Zone{
+							{
+								Alias: "zone-1",
+								Name:  "name-1",
+							},
+						},
 					},
 				}))
 			})

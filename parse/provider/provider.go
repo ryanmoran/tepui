@@ -11,6 +11,7 @@ type GCP struct {
 	Credentials string
 	Project     string
 	Region      string
+	Zones       Zones
 }
 
 type AWS struct {
