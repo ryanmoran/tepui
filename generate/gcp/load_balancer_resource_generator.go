@@ -2,7 +2,6 @@ package gcp
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/ryanmoran/tepui/generate/gcp/resources"
@@ -21,83 +20,50 @@ func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalanc
 	var r terraform.Resources
 
 	globalAddress := terraform.NamedResource{
-		Name: loadBalancer.Name,
-		Resource: resources.GoogleComputeGlobalAddress{
-			Name: loadBalancer.Name,
-		},
+		Name:     loadBalancer.Name,
+		Resource: resources.NewGoogleComputeGlobalAddress(loadBalancer.Name),
 	}
 
 	healthCheck := terraform.NamedResource{
-		Name: loadBalancer.Name,
-		Resource: resources.GoogleComputeHealthCheck{
-			Name:           loadBalancer.Name,
-			TCPHealthCheck: resources.GoogleComputeHealthCheckTCP{},
-		},
+		Name:     loadBalancer.Name,
+		Resource: resources.NewGoogleComputeHealthCheck(loadBalancer.Name),
 	}
 
 	var instanceGroups []terraform.NamedResource
 	for _, z := range loadBalancer.Zones {
 		zone, _ := zones.Find(z)
+		name := strings.Join([]string{loadBalancer.Name, z}, "-")
 
 		instanceGroup := terraform.NamedResource{
-			Name: strings.Join([]string{loadBalancer.Name, z}, "-"),
-			Resource: resources.GoogleComputeInstanceGroup{
-				Name: strings.Join([]string{loadBalancer.Name, z}, "-"),
-				Zone: zone,
-			},
+			Name:     name,
+			Resource: resources.NewGoogleComputeInstanceGroup(name, zone),
 		}
 
 		instanceGroups = append(instanceGroups, instanceGroup)
 		r = append(r, instanceGroup)
 	}
 
-	var backends []resources.GoogleComputeBackendServiceBackend
-	for _, instanceGroup := range instanceGroups {
-		backend := resources.GoogleComputeBackendServiceBackend{
-			Group: instanceGroup.SelfLink(),
-		}
-		backends = append(backends, backend)
-	}
-
 	backendService := terraform.NamedResource{
-		Name: loadBalancer.Name,
-		Resource: resources.GoogleComputeBackendService{
-			Name:    loadBalancer.Name,
-			Backend: backends,
-			HealthChecks: []string{
-				healthCheck.SelfLink(),
-			},
-		},
+		Name:     loadBalancer.Name,
+		Resource: resources.NewGoogleComputeBackendService(loadBalancer.Name, healthCheck, instanceGroups),
 	}
 
 	urlMap := terraform.NamedResource{
-		Name: loadBalancer.Name,
-		Resource: resources.GoogleComputeUrlMap{
-			Name:           loadBalancer.Name,
-			DefaultService: backendService.SelfLink(),
-		},
+		Name:     loadBalancer.Name,
+		Resource: resources.NewGoogleComputeUrlMap(loadBalancer.Name, backendService),
 	}
 
 	targetHTTPProxy := terraform.NamedResource{
-		Name: loadBalancer.Name,
-		Resource: resources.GoogleComputeTargetHttpProxy{
-			Name:   loadBalancer.Name,
-			URLMap: urlMap.SelfLink(),
-		},
+		Name:     loadBalancer.Name,
+		Resource: resources.NewGoogleComputeTargetHttpProxy(loadBalancer.Name, urlMap),
 	}
 
 	for _, port := range loadBalancer.Ports {
-		forwardingRule := terraform.NamedResource{
-			Name: fmt.Sprintf("%s-%d", loadBalancer.Name, port),
-			Resource: resources.GoogleComputeGlobalForwardingRule{
-				Name:      fmt.Sprintf("%s-%d", loadBalancer.Name, port),
-				IPAddress: globalAddress.Attribute("address"),
-				PortRange: strconv.Itoa(port),
-				Target:    targetHTTPProxy.SelfLink(),
-			},
-		}
-
-		r = append(r, forwardingRule)
+		name := fmt.Sprintf("%s-%d", loadBalancer.Name, port)
+		r = append(r, terraform.NamedResource{
+			Name:     name,
+			Resource: resources.NewGoogleComputeGlobalForwardingRule(name, port, globalAddress, targetHTTPProxy),
+		})
 	}
 
 	r = append(r, globalAddress, targetHTTPProxy, urlMap, backendService, healthCheck)

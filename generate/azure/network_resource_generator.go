@@ -16,26 +16,16 @@ func (g NetworkResourceGenerator) Generate(resourceGroup terraform.NamedResource
 	var r terraform.Resources
 
 	networkResource := terraform.NamedResource{
-		Name: network.Name,
-		Resource: resources.AzurermVirtualNetwork{
-			Name:              network.Name,
-			ResourceGroupName: resourceGroup.Attribute("name"),
-			AddressSpace:      []string{network.CIDR},
-			Location:          region,
-		},
+		Name:     network.Name,
+		Resource: resources.NewAzurermVirtualNetwork(network.Name, network.CIDR, region, resourceGroup),
 	}
 
 	r = append(r, networkResource)
 
 	for _, subnet := range network.Subnets {
 		subnetResource := terraform.NamedResource{
-			Name: subnet.Name,
-			Resource: resources.AzurermSubnet{
-				Name:               subnet.Name,
-				ResourceGroupName:  resourceGroup.Attribute("name"),
-				VirtualNetworkName: networkResource.Attribute("name"),
-				AddressPrefix:      subnet.CIDR,
-			},
+			Name:     subnet.Name,
+			Resource: resources.NewAzurermSubnet(subnet.Name, subnet.CIDR, networkResource, resourceGroup),
 		}
 
 		r = append(r, subnetResource)

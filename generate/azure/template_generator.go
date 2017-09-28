@@ -28,11 +28,8 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	})
 
 	resourceGroup := terraform.NamedResource{
-		Name: "resource_group",
-		Resource: resources.AzurermResourceGroup{
-			Name:     m.Name,
-			Location: p.Azure.Region,
-		},
+		Name:     "resource_group",
+		Resource: resources.NewAzurermResourceGroup(m.Name, p.Azure.Region),
 	}
 
 	template.Resources = append(template.Resources, resourceGroup)

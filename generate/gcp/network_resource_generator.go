@@ -16,22 +16,16 @@ func (g NetworkResourceGenerator) Generate(network manifest.Network) terraform.R
 	var r terraform.Resources
 
 	networkResource := terraform.NamedResource{
-		Name: network.Name,
-		Resource: resources.GoogleComputeNetwork{
-			Name: network.Name,
-		},
+		Name:     network.Name,
+		Resource: resources.NewGoogleComputeNetwork(network.Name),
 	}
 
 	r = append(r, networkResource)
 
 	for _, subnet := range network.Subnets {
 		subnetResource := terraform.NamedResource{
-			Name: subnet.Name,
-			Resource: resources.GoogleComputeSubnetwork{
-				Name:        subnet.Name,
-				IPCIDRRange: subnet.CIDR,
-				Network:     networkResource.SelfLink(),
-			},
+			Name:     subnet.Name,
+			Resource: resources.NewGoogleComputeSubnetwork(subnet.Name, subnet.CIDR, networkResource),
 		}
 
 		r = append(r, subnetResource)

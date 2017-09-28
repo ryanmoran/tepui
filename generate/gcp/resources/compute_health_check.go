@@ -5,4 +5,11 @@ type GoogleComputeHealthCheck struct {
 	TCPHealthCheck GoogleComputeHealthCheckTCP `json:"tcp_health_check"`
 }
 
+func NewGoogleComputeHealthCheck(name string) GoogleComputeHealthCheck {
+	return GoogleComputeHealthCheck{
+		Name:           name,
+		TCPHealthCheck: GoogleComputeHealthCheckTCP{},
+	}
+}
+
 type GoogleComputeHealthCheckTCP struct{}

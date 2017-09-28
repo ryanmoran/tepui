@@ -16,29 +16,16 @@ func (g NetworkResourceGenerator) Generate(environment string, network manifest.
 	var r terraform.Resources
 
 	networkResource := terraform.NamedResource{
-		Name: network.Name,
-		Resource: resources.AwsVpc{
-			CIDRBlock: network.CIDR,
-			Tags: map[string]string{
-				"Name":        network.Name,
-				"Environment": environment,
-			},
-		},
+		Name:     network.Name,
+		Resource: resources.NewAwsVpc(network.Name, network.CIDR, environment),
 	}
 
 	r = append(r, networkResource)
 
 	for _, subnet := range network.Subnets {
 		subnetResource := terraform.NamedResource{
-			Name: subnet.Name,
-			Resource: resources.AwsSubnet{
-				VPCID:     networkResource.Attribute("id"),
-				CIDRBlock: subnet.CIDR,
-				Tags: map[string]string{
-					"Name":        subnet.Name,
-					"Environment": environment,
-				},
-			},
+			Name:     subnet.Name,
+			Resource: resources.NewAwsSubnet(subnet.Name, subnet.CIDR, environment, networkResource),
 		}
 
 		r = append(r, subnetResource)
