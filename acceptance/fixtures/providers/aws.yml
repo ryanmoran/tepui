@@ -4,3 +4,8 @@ params:
   access_key: some-access-key
   secret_key: some-secret-key
   region: some-region
+  zones:
+  - alias: az-1
+    name: us-west-2a
+  - alias: az-2
+    name: us-west-2b

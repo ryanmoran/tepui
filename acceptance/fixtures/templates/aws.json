@@ -9,14 +9,14 @@
   "resource": {
     "aws_vpc": {
       "some-network-1": {
-        "cidr_block": "1.2.3.4/5",
+        "cidr_block": "10.0.0.0/16",
         "tags": {
           "Name": "some-network-1",
           "Environment": "some-environment"
         }
       },
       "some-network-2": {
-        "cidr_block": "6.7.8.9/10",
+        "cidr_block": "10.1.0.0/16",
         "tags": {
           "Name": "some-network-2",
           "Environment": "some-environment"
@@ -26,7 +26,7 @@
     "aws_subnet": {
       "some-subnet-1": {
         "vpc_id": "${aws_vpc.some-network-1.id}",
-        "cidr_block": "2.3.4.5/6",
+        "cidr_block": "10.0.0.0/24",
         "tags": {
           "Name": "some-subnet-1",
           "Environment": "some-environment"
@@ -34,7 +34,7 @@
       },
       "some-subnet-2": {
         "vpc_id": "${aws_vpc.some-network-1.id}",
-        "cidr_block": "3.4.5.6/7",
+        "cidr_block": "10.0.1.0/24",
         "tags": {
           "Name": "some-subnet-2",
           "Environment": "some-environment"
@@ -42,7 +42,7 @@
       },
       "some-subnet-3": {
         "vpc_id": "${aws_vpc.some-network-2.id}",
-        "cidr_block": "7.8.9.10/11",
+        "cidr_block": "10.1.0.0/24",
         "tags": {
           "Name": "some-subnet-3",
           "Environment": "some-environment"
@@ -50,7 +50,7 @@
       },
       "some-subnet-4": {
         "vpc_id": "${aws_vpc.some-network-2.id}",
-        "cidr_block": "8.9.10.11/12",
+        "cidr_block": "10.1.1.0/24",
         "tags": {
           "Name": "some-subnet-4",
           "Environment": "some-environment"
