@@ -61,6 +61,7 @@ func (p Parser) Parse(path string) (Provider, error) {
 				AccessKey: provider.Params.AccessKey,
 				SecretKey: provider.Params.SecretKey,
 				Region:    provider.Params.Region,
+				Zones:     provider.Params.Zones,
 			},
 		}, nil
 	case "azure":

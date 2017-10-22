@@ -5,6 +5,7 @@ import (
 	"github.com/ryanmoran/tepui/generate/aws/resources"
 	"github.com/ryanmoran/tepui/generate/internal/terraform"
 	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -17,20 +18,31 @@ var _ = Describe("NetworkResourceGenerator", func() {
 
 			network := manifest.Network{
 				Name: "some-network",
-				CIDR: "1.2.3.4/5",
+				CIDR: "127.0.0.0/8",
 				Subnets: []manifest.Subnet{
 					{
 						Name: "some-subnet",
-						CIDR: "6.7.8.9/10",
+						CIDR: "127.0.0.0/8",
 					},
 				},
 			}
 
-			Expect(generator.Generate("some-environment", network)).To(ConsistOf(terraform.Resources{
+			zones := []provider.Zone{
+				{
+					Name:  "us-central-1a",
+					Alias: "some-az-1",
+				},
+				{
+					Name:  "us-central-1b",
+					Alias: "some-az-2",
+				},
+			}
+
+			Expect(generator.Generate("some-environment", zones, network)).To(ConsistOf(terraform.Resources{
 				{
 					Name: "some-network",
 					Resource: resources.AwsVpc{
-						CIDRBlock: "1.2.3.4/5",
+						CIDRBlock: "127.0.0.0/8",
 						Tags: map[string]string{
 							"Name":        "some-network",
 							"Environment": "some-environment",
@@ -38,12 +50,25 @@ var _ = Describe("NetworkResourceGenerator", func() {
 					},
 				},
 				{
-					Name: "some-subnet",
+					Name: "some-subnet-some-az-1",
 					Resource: resources.AwsSubnet{
-						VPCID:     "${aws_vpc.some-network.id}",
-						CIDRBlock: "6.7.8.9/10",
+						VPCID:            "${aws_vpc.some-network.id}",
+						CIDRBlock:        "127.0.0.0/9",
+						AvailabilityZone: "us-central-1a",
 						Tags: map[string]string{
-							"Name":        "some-subnet",
+							"Name":        "some-subnet-some-az-1",
+							"Environment": "some-environment",
+						},
+					},
+				},
+				{
+					Name: "some-subnet-some-az-2",
+					Resource: resources.AwsSubnet{
+						VPCID:            "${aws_vpc.some-network.id}",
+						CIDRBlock:        "127.128.0.0/9",
+						AvailabilityZone: "us-central-1b",
+						Tags: map[string]string{
+							"Name":        "some-subnet-some-az-2",
 							"Environment": "some-environment",
 						},
 					},

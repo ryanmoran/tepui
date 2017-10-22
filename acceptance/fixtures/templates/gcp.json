@@ -92,22 +92,22 @@
     },
     "google_compute_subnetwork": {
       "some-subnet-1": {
-        "ip_cidr_range": "10.0.0.0/24",
+        "ip_cidr_range": "10.0.0.0/17",
         "name": "some-subnet-1",
         "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-subnet-2": {
-        "ip_cidr_range": "10.0.1.0/24",
+        "ip_cidr_range": "10.0.128.0/17",
         "name": "some-subnet-2",
         "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-subnet-3": {
-        "ip_cidr_range": "10.1.0.0/24",
+        "ip_cidr_range": "10.1.0.0/17",
         "name": "some-subnet-3",
         "network": "${google_compute_network.some-network-2.self_link}"
       },
       "some-subnet-4": {
-        "ip_cidr_range": "10.1.1.0/24",
+        "ip_cidr_range": "10.1.128.0/17",
         "name": "some-subnet-4",
         "network": "${google_compute_network.some-network-2.self_link}"
       }

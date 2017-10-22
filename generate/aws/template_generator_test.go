@@ -18,6 +18,12 @@ var _ = Describe("TemplateGenerator", func() {
 					AccessKey: "some-access-key",
 					SecretKey: "some-secret-key",
 					Region:    "some-region",
+					Zones: []provider.Zone{
+						{
+							Alias: "az-1",
+							Name:  "us-east-1a",
+						},
+					},
 				},
 			}
 			manifest := manifest.Manifest{
@@ -25,11 +31,15 @@ var _ = Describe("TemplateGenerator", func() {
 				Networks: []manifest.Network{
 					{
 						Name: "some-network",
-						CIDR: "1.2.3.4/5",
+						CIDR: "10.0.0.0/8",
 						Subnets: []manifest.Subnet{
 							{
-								Name: "some-subnet",
-								CIDR: "2.3.4.5/6",
+								Name: "some-subnet-1",
+								CIDR: "10.0.0.0/9",
+							},
+							{
+								Name: "some-subnet-2",
+								CIDR: "10.128.0.0/9",
 							},
 						},
 					},
@@ -50,7 +60,7 @@ var _ = Describe("TemplateGenerator", func() {
 				"resource": {
 					"aws_vpc": {
 						"some-network": {
-							"cidr_block": "1.2.3.4/5",
+							"cidr_block": "10.0.0.0/8",
 							"tags": {
 								"Name": "some-network",
 								"Environment": "some-environment"
@@ -58,11 +68,21 @@ var _ = Describe("TemplateGenerator", func() {
 						}
 					},
 					"aws_subnet": {
-						"some-subnet": {
+						"some-subnet-1-az-1": {
 							"vpc_id": "${aws_vpc.some-network.id}",
-							"cidr_block": "2.3.4.5/6",
+							"cidr_block": "10.0.0.0/9",
+							"availability_zone": "us-east-1a",
 							"tags": {
-								"Name": "some-subnet",
+								"Name": "some-subnet-1-az-1",
+								"Environment": "some-environment"
+							}
+						},
+						"some-subnet-2-az-1": {
+							"vpc_id": "${aws_vpc.some-network.id}",
+							"cidr_block": "10.128.0.0/9",
+							"availability_zone": "us-east-1a",
+							"tags": {
+								"Name": "some-subnet-2-az-1",
 								"Environment": "some-environment"
 							}
 						}

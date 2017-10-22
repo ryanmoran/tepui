@@ -33,25 +33,25 @@
         "name": "some-subnet-1",
         "virtual_network_name": "${azurerm_virtual_network.some-network-1.name}",
         "resource_group_name": "${azurerm_resource_group.resource_group.name}",
-        "address_prefix": "10.0.0.0/24"
+        "address_prefix": "10.0.0.0/17"
       },
       "some-subnet-2": {
         "name": "some-subnet-2",
         "virtual_network_name": "${azurerm_virtual_network.some-network-1.name}",
         "resource_group_name": "${azurerm_resource_group.resource_group.name}",
-        "address_prefix": "10.0.1.0/24"
+        "address_prefix": "10.0.128.0/17"
       },
       "some-subnet-3": {
         "name": "some-subnet-3",
         "virtual_network_name": "${azurerm_virtual_network.some-network-2.name}",
         "resource_group_name": "${azurerm_resource_group.resource_group.name}",
-        "address_prefix": "10.1.0.0/24"
+        "address_prefix": "10.1.0.0/17"
       },
       "some-subnet-4": {
         "name": "some-subnet-4",
         "virtual_network_name": "${azurerm_virtual_network.some-network-2.name}",
         "resource_group_name": "${azurerm_resource_group.resource_group.name}",
-        "address_prefix": "10.1.1.0/24"
+        "address_prefix": "10.1.128.0/17"
       }
     }
   }

@@ -25,7 +25,7 @@ func (g TemplateGenerator) Generate(p provider.Provider, m manifest.Manifest) (s
 	})
 
 	for _, network := range m.Networks {
-		template.Resources = append(template.Resources, g.networks.Generate(m.Name, network)...)
+		template.Resources = append(template.Resources, g.networks.Generate(m.Name, p.AWS.Zones, network)...)
 	}
 
 	output, err := json.MarshalIndent(template, "", "  ")

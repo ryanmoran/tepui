@@ -18,6 +18,7 @@ type AWS struct {
 	AccessKey string
 	SecretKey string
 	Region    string
+	Zones     Zones
 }
 
 type Azure struct {

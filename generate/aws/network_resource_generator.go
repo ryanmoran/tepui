@@ -1,9 +1,12 @@
 package aws
 
 import (
+	"fmt"
+
 	"github.com/ryanmoran/tepui/generate/aws/resources"
 	"github.com/ryanmoran/tepui/generate/internal/terraform"
 	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 )
 
 type NetworkResourceGenerator struct{}
@@ -12,7 +15,7 @@ func NewNetworkResourceGenerator() NetworkResourceGenerator {
 	return NetworkResourceGenerator{}
 }
 
-func (g NetworkResourceGenerator) Generate(environment string, network manifest.Network) terraform.Resources {
+func (g NetworkResourceGenerator) Generate(environment string, availabilityZones []provider.Zone, network manifest.Network) terraform.Resources {
 	var r terraform.Resources
 
 	networkResource := terraform.NamedResource{
@@ -23,12 +26,15 @@ func (g NetworkResourceGenerator) Generate(environment string, network manifest.
 	r = append(r, networkResource)
 
 	for _, subnet := range network.Subnets {
-		subnetResource := terraform.NamedResource{
-			Name:     subnet.Name,
-			Resource: resources.NewAwsSubnet(subnet.Name, subnet.CIDR, environment, networkResource),
-		}
+		cidrPartitioner := NewCIDRPartitioner(subnet.CIDR, len(availabilityZones))
+		for azIndex, az := range availabilityZones {
+			subnetResource := terraform.NamedResource{
+				Name:     fmt.Sprintf("%s-%s", subnet.Name, az.Alias),
+				Resource: resources.NewAwsSubnet(subnet.Name, cidrPartitioner.Partition(azIndex), environment, az, networkResource),
+			}
 
-		r = append(r, subnetResource)
+			r = append(r, subnetResource)
+		}
 	}
 
 	return r

@@ -4,3 +4,6 @@ params:
   access_key: some-access-key
   secret_key: some-secret-key
   region: some-region
+  zones:
+  - alias: zone-1
+    name: name-1

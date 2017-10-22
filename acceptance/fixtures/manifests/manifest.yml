@@ -6,16 +6,16 @@ networks:
   cidr: 10.0.0.0/16
   subnets:
   - name: some-subnet-1
-    cidr: 10.0.0.0/24
+    cidr: 10.0.0.0/17
   - name: some-subnet-2
-    cidr: 10.0.1.0/24
+    cidr: 10.0.128.0/17
 - name: some-network-2
   cidr: 10.1.0.0/16
   subnets:
   - name: some-subnet-3
-    cidr: 10.1.0.0/24
+    cidr: 10.1.0.0/17
   - name: some-subnet-4
-    cidr: 10.1.1.0/24
+    cidr: 10.1.128.0/17
 
 load_balancers:
 - name: some-lb-1
