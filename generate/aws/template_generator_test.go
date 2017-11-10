@@ -42,6 +42,13 @@ var _ = Describe("TemplateGenerator", func() {
 								CIDR: "10.128.0.0/9",
 							},
 						},
+						LoadBalancers: []manifest.LoadBalancer{
+							{
+								Name:  "some-lb",
+								Ports: []int{1234},
+								Zones: []string{"az-1"},
+							},
+						},
 					},
 				},
 			}
@@ -58,6 +65,49 @@ var _ = Describe("TemplateGenerator", func() {
 					}
 				},
 				"resource": {
+					"aws_lb": {
+						"some-lb": {
+							"name": "some-lb",
+							"load_balancer_type": "network",
+							"idle_timeout": "3600",
+							"security_groups": ["${aws_security_group.some-lb.id}"]
+						}
+					},
+					"aws_lb_target_group": {
+						"some-lb-1234": {
+							"name": "some-lb-1234",
+							"port": 1234,
+							"protocol": "http",
+							"vpc_id": "${aws_vpc.some-network.id}"
+						}
+					},
+					"aws_lb_listener": {
+						"some-lb-1234": {
+							"load_balancer_arn": "${aws_lb.some-lb.arn}",
+							"port": "1234",
+							"default_action": {
+								"target_group_arn": "${aws_lb_target_group.some-lb-1234.arn}",
+								"type": "forward"
+							}
+						}
+					},
+					"aws_security_group": {
+						"some-lb": {
+							"name": "some-lb",
+							"tags": {
+								"Name": "some-lb"
+							}
+						}
+					},
+					"aws_security_group_rule": {
+						"some-lb-1234": {
+							"type": "ingress",
+							"protocol": "tcp",
+							"from_port": "1234",
+							"to_port": "1234",
+							"security_group_id": "${aws_security_group.some-lb.id}"
+						}
+					},
 					"aws_vpc": {
 						"some-network": {
 							"cidr_block": "10.0.0.0/8",

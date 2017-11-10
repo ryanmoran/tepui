@@ -37,5 +37,10 @@ func (g NetworkResourceGenerator) Generate(environment string, availabilityZones
 		}
 	}
 
+	loadBalancerResourceGenerator := NewLoadBalancerResourceGenerator()
+	for _, loadBalancer := range network.LoadBalancers {
+		r = append(r, loadBalancerResourceGenerator.Generate(loadBalancer, availabilityZones, networkResource.Attribute("id"))...)
+	}
+
 	return r
 }
