@@ -9,6 +9,15 @@ networks:
     cidr: 10.0.0.0/17
   - name: some-subnet-2
     cidr: 10.0.128.0/17
+  load_balancers:
+  - name: some-lb-1
+    ports:
+    - 80
+    - 8080
+    zones:
+    - az-1
+    - az-2
+
 - name: some-network-2
   cidr: 10.1.0.0/16
   subnets:
@@ -16,17 +25,9 @@ networks:
     cidr: 10.1.0.0/17
   - name: some-subnet-4
     cidr: 10.1.128.0/17
-
-load_balancers:
-- name: some-lb-1
-  ports:
-  - 80
-  - 8080
-  zones:
-  - az-1
-  - az-2
-- name: some-lb-2
-  ports:
-  - 1234
-  zones:
-  - az-1
+  load_balancers:
+  - name: some-lb-2
+    ports:
+    - 1234
+    zones:
+    - az-1

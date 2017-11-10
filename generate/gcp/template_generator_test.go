@@ -38,13 +38,13 @@ var _ = Describe("TemplateGenerator", func() {
 								CIDR: "2.3.4.5/6",
 							},
 						},
-					},
-				},
-				LoadBalancers: []manifest.LoadBalancer{
-					{
-						Name:  "some-lb",
-						Ports: []int{1234},
-						Zones: []string{"az-1"},
+						LoadBalancers: []manifest.LoadBalancer{
+							{
+								Name:  "some-lb",
+								Ports: []int{1234},
+								Zones: []string{"az-1"},
+							},
+						},
 					},
 				},
 			}
@@ -111,7 +111,8 @@ var _ = Describe("TemplateGenerator", func() {
 					"google_compute_instance_group": {
 						"some-lb-az-1": {
 							"name": "some-lb-az-1",
-							"zone": "some-zone"
+							"zone": "some-zone",
+							"network": "${google_compute_network.some-network.self_link}"
 						}
 					},
 					"google_compute_health_check": {

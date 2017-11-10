@@ -6,10 +6,9 @@ networks:
   subnets:
   - name: some-subnet
     cidr: 2.3.4.5/6
-
-load_balancers:
-- name: some-lb
-  ports:
-  - 1234
-  zones:
-  - some-zone
+  load_balancers:
+  - name: some-lb
+    ports:
+    - 1234
+    zones:
+    - some-zone

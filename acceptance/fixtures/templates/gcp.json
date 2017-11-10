@@ -71,15 +71,18 @@
     "google_compute_instance_group": {
       "some-lb-1-az-1": {
         "name": "some-lb-1-az-1",
-        "zone": "us-central1-a"
+        "zone": "us-central1-a",
+        "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-lb-1-az-2": {
         "name": "some-lb-1-az-2",
-        "zone": "us-central1-b"
+        "zone": "us-central1-b",
+        "network": "${google_compute_network.some-network-1.self_link}"
       },
       "some-lb-2-az-1": {
         "name": "some-lb-2-az-1",
-        "zone": "us-central1-a"
+        "zone": "us-central1-a",
+        "network": "${google_compute_network.some-network-2.self_link}"
       }
     },
     "google_compute_network": {

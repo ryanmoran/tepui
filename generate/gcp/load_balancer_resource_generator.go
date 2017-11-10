@@ -16,7 +16,7 @@ func NewLoadBalancerResourceGenerator() LoadBalancerResourceGenerator {
 	return LoadBalancerResourceGenerator{}
 }
 
-func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalancer, zones provider.Zones) terraform.Resources {
+func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalancer, zones provider.Zones, network string) terraform.Resources {
 	var r terraform.Resources
 
 	globalAddress := terraform.NamedResource{
@@ -36,7 +36,7 @@ func (g LoadBalancerResourceGenerator) Generate(loadBalancer manifest.LoadBalanc
 
 		instanceGroup := terraform.NamedResource{
 			Name:     name,
-			Resource: resources.NewGoogleComputeInstanceGroup(name, zone),
+			Resource: resources.NewGoogleComputeInstanceGroup(name, zone, network),
 		}
 
 		instanceGroups = append(instanceGroups, instanceGroup)

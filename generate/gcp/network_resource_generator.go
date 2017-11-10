@@ -4,6 +4,7 @@ import (
 	"github.com/ryanmoran/tepui/generate/gcp/resources"
 	"github.com/ryanmoran/tepui/generate/internal/terraform"
 	"github.com/ryanmoran/tepui/parse/manifest"
+	"github.com/ryanmoran/tepui/parse/provider"
 )
 
 type NetworkResourceGenerator struct{}
@@ -12,7 +13,7 @@ func NewNetworkResourceGenerator() NetworkResourceGenerator {
 	return NetworkResourceGenerator{}
 }
 
-func (g NetworkResourceGenerator) Generate(network manifest.Network) terraform.Resources {
+func (g NetworkResourceGenerator) Generate(network manifest.Network, zones provider.Zones) terraform.Resources {
 	var r terraform.Resources
 
 	networkResource := terraform.NamedResource{
@@ -29,6 +30,11 @@ func (g NetworkResourceGenerator) Generate(network manifest.Network) terraform.R
 		}
 
 		r = append(r, subnetResource)
+	}
+
+	loadBalancerResourceGenerator := NewLoadBalancerResourceGenerator()
+	for _, loadBalancer := range network.LoadBalancers {
+		r = append(r, loadBalancerResourceGenerator.Generate(loadBalancer, zones, networkResource.SelfLink())...)
 	}
 
 	return r

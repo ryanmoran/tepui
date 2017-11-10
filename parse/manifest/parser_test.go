@@ -30,13 +30,13 @@ var _ = Describe("Parser", func() {
 								CIDR: "2.3.4.5/6",
 							},
 						},
-					},
-				},
-				LoadBalancers: []manifest.LoadBalancer{
-					{
-						Name:  "some-lb",
-						Ports: []int{1234},
-						Zones: []string{"some-zone"},
+						LoadBalancers: []manifest.LoadBalancer{
+							{
+								Name:  "some-lb",
+								Ports: []int{1234},
+								Zones: []string{"some-zone"},
+							},
+						},
 					},
 				},
 			}))
